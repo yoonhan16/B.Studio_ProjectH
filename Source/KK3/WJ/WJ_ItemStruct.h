@@ -51,6 +51,19 @@ public:
 
 };
 
+USTRUCT(Atomic, BlueprintType)
+struct FItemCheckerStruct
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FItemStruct ItemStruct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsChecked = false;
+};
+
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor
 {

@@ -29,6 +29,7 @@ void AWJ_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 	DOREPLIFETIME(AWJ_PlayerState, PlayerIndex);
 	DOREPLIFETIME(AWJ_PlayerState, PlayerRole);
+	DOREPLIFETIME(AWJ_PlayerState, ItemChecker);
 }
 
 void AWJ_PlayerState::AddActorProcedure(AWJ_InteractionActor* Actor)
@@ -152,4 +153,88 @@ void AWJ_PlayerState::Multi_SetPlayerRole_Implementation(const FString& NewRole)
 FString AWJ_PlayerState::GetPlayerRole()
 {
 	return PlayerRole;
+}
+
+void AWJ_PlayerState::SetItemChecker(const TArray<FItemCheckerStruct>& NewItems)
+{
+	if (HasAuthority())
+	{
+		Multi_SetItemChecker(NewItems);
+	}
+	else
+	{
+		Server_SetItemChecker(NewItems);
+	}
+}
+
+bool AWJ_PlayerState::Server_SetItemChecker_Validate(const TArray<FItemCheckerStruct>& NewItems)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Server_SetItemChecker_Implementation(const TArray<FItemCheckerStruct>& NewItems)
+{
+	Multi_SetItemChecker(NewItems);
+}
+
+bool AWJ_PlayerState::Multi_SetItemChecker_Validate(const TArray<FItemCheckerStruct>& NewItems)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Multi_SetItemChecker_Implementation(const TArray<FItemCheckerStruct>& NewItems)
+{
+	ItemChecker = NewItems;
+}
+
+void AWJ_PlayerState::SetItemChecked(int32 ItemIndex, bool ItemChecked)
+{
+	if (ItemChecker.Num() > ItemIndex)
+	{
+		ItemChecker[ItemIndex].IsChecked = ItemChecked;
+	}
+}
+
+void AWJ_PlayerState::AddItemChecker(FItemCheckerStruct NewItem)
+{
+	if (HasAuthority())
+	{
+		Multi_AddItemChecker(NewItem);
+	}
+	else
+	{
+		Server_AddItemChecker(NewItem);
+	}
+
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Array Item Num is : %d"), ItemChecker.Num()));
+}
+
+bool AWJ_PlayerState::Server_AddItemChecker_Validate(FItemCheckerStruct NewItem)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Server_AddItemChecker_Implementation(FItemCheckerStruct NewItem)
+{
+	Multi_AddItemChecker(NewItem);
+}
+
+bool AWJ_PlayerState::Multi_AddItemChecker_Validate(FItemCheckerStruct NewItem)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Multi_AddItemChecker_Implementation(FItemCheckerStruct NewItem)
+{
+	for (auto Item : ItemChecker)
+	{
+		if (Item.ItemStruct.Name.EqualTo(NewItem.ItemStruct.Name))
+		{
+			return;
+		}
+	}
+
+	ItemChecker.Add(NewItem);
+
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WJ_PlayerController.h"
+#include "WJ_ItemStruct.h"
 #include "GameFramework/GameModeBase.h"
 #include "WJ_GameModeBase.generated.h"
 
@@ -60,6 +61,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timer")
 	FTimerHandle CountTimerHandle;
 
+	UPROPERTY(EditAnywhere, BlueprintReadwrite)
+	TArray<FItemCheckerStruct> TestItems;
 public:
 
 	UFUNCTION(BlueprintCallable)

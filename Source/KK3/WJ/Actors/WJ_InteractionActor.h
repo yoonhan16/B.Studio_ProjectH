@@ -13,6 +13,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "../Widgets/WJ_InteractingWidget.h"
 #include "../Widgets/WJ_InvestigatingWidget.h"
+#include "../WJ_ItemStruct.h"
 #include "WJ_InteractionActor.generated.h"
 
 UCLASS()
@@ -48,6 +49,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWJ_Widget* IsFocusWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FItemStruct ItemStruct;
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

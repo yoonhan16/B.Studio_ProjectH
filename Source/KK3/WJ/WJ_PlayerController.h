@@ -185,5 +185,8 @@ public:
 	bool Client_CallInEar_Validate();
 	void Client_CallInEar_Implementation();
 
+	UFUNCTION(BlueprintCallable)
+	void AddItemStruct(FItemStruct NewItemStruct);
+
 };
 

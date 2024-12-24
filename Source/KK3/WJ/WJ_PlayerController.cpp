@@ -390,7 +390,7 @@ void AWJ_PlayerController::CameraMove(const FInputActionValue& Value)
 		SpringArm_Interact->SetRelativeRotation(NewSpringRotator);
 		Arrow_Interact->SetRelativeRotation(NewArrowRotator);
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Camera Move Called, %f"), NewPitch));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Camera Move Called, %f"), NewPitch));
 	}
 }
 
@@ -410,7 +410,7 @@ void AWJ_PlayerController::CameraRotate(const FInputActionValue& Value)
 
 		Camera_Interact->SetRelativeRotation(NewRotator);
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Camera Move Called, %f, %f"), NewPitch, NewYaw));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Camera Move Called, %f, %f"), NewPitch, NewYaw));
 	}
 }
 
@@ -519,19 +519,21 @@ void AWJ_PlayerController::Interact_Camera()
 			CameraEndLoc = InteractionActor->SpringArm_Camera->GetComponentLocation();
 			CameraEndRot = InteractionActor->SpringArm_Camera->GetComponentRotation();
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("End Location is : %s"), *CameraEndLoc.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Before Arrow Location is : %s"), *Arrow_Interact->GetComponentLocation().ToString()));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("End Location is : %s"), *CameraEndLoc.ToString()));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Before Arrow Location is : %s"), *Arrow_Interact->GetComponentLocation().ToString()));
 
 			SpringArm_Interact->bUsePawnControlRotation = false;
 			SpringArm_Interact->bDoCollisionTest = false;
 			Arrow_Interact->SetWorldLocation(CameraEndLoc);
 			Arrow_Interact->SetWorldRotation(CameraEndRot);
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("After Arrow Location is : %s"), *Arrow_Interact->GetComponentLocation().ToString()));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("After Arrow Location is : %s"), *Arrow_Interact->GetComponentLocation().ToString()));
 
 
 			Camera_Character->SetActive(false);
 			Camera_Interact->SetActive(true);
+
+			AddItemStruct(InteractionActor->ItemStruct);
 		}
 		else
 		{
@@ -550,7 +552,7 @@ void AWJ_PlayerController::Interact_Camera()
 		}
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Interact_Camera is Called"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Interact_Camera is Called"));
 }
 
 void AWJ_PlayerController::GetPlayersNum()
@@ -647,7 +649,7 @@ void AWJ_PlayerController::Server_CallInEar_Implementation(AWJ_PlayerController*
 		{
 			if (WJ_PlayerController != MyController)
 			{
-
+				WJ_PlayerController->Client_CallInEar();
 			}
 		}
 	}
@@ -661,4 +663,18 @@ bool AWJ_PlayerController::Client_CallInEar_Validate()
 void AWJ_PlayerController::Client_CallInEar_Implementation()
 {
 
+}
+
+void AWJ_PlayerController::AddItemStruct(FItemStruct NewItemStruct)
+{
+	AWJ_PlayerState* PS = Cast<AWJ_PlayerState>(GetPlayerState<APlayerState>());
+	
+	if(PS)
+	{
+		FItemCheckerStruct ItemCheckerStruct = FItemCheckerStruct();
+		ItemCheckerStruct.ItemStruct = NewItemStruct;
+		//ItemCheckerStruct.IsChecked = true;
+
+		PS->AddItemChecker(ItemCheckerStruct);
+	}
 }

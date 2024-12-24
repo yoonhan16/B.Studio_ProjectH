@@ -4,11 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "WJ_ItemStruct.h"
 #include "WJ_PlayerState.generated.h"
 
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class EPlayerRole : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Detactor UMETA(DisplayName = "Detactor"),
+	Negotiator UMETA(DisplayName = "Negotiator")
+};
+
 UCLASS()
 class KK3_API AWJ_PlayerState : public APlayerState
 {
@@ -31,6 +41,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	FString PlayerRole;
+
+	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
+	TArray<FItemCheckerStruct> ItemChecker;
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);
@@ -83,4 +96,32 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString GetPlayerRole();
 
+	UFUNCTION(BlueprintCallable)
+	void SetItemChecker(const TArray<FItemCheckerStruct>& NewItems);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SetItemChecker(const TArray<FItemCheckerStruct>& NewItems);
+	bool Server_SetItemChecker_Validate(const TArray<FItemCheckerStruct>& NewItems);
+	void Server_SetItemChecker_Implementation(const TArray<FItemCheckerStruct>& NewItems);
+
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	void Multi_SetItemChecker(const TArray<FItemCheckerStruct>& NewItems);
+	bool Multi_SetItemChecker_Validate(const TArray<FItemCheckerStruct>& NewItems);
+	void Multi_SetItemChecker_Implementation(const TArray<FItemCheckerStruct>& NewItems);
+
+	UFUNCTION(BlueprintCallable)
+	void SetItemChecked(int32 ItemIndex, bool ItemChecked);
+
+	UFUNCTION(BlueprintCallable)
+	void AddItemChecker(FItemCheckerStruct NewItem);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_AddItemChecker(FItemCheckerStruct NewItem);
+	bool Server_AddItemChecker_Validate(FItemCheckerStruct NewItem);
+	void Server_AddItemChecker_Implementation(FItemCheckerStruct NewItem);
+
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	void Multi_AddItemChecker(FItemCheckerStruct NewItem);
+	bool Multi_AddItemChecker_Validate(FItemCheckerStruct NewItem);
+	void Multi_AddItemChecker_Implementation(FItemCheckerStruct NewItem);
 };

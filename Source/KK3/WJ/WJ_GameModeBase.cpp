@@ -34,11 +34,15 @@ void AWJ_GameModeBase::PostLogin(APlayerController* NewPlayer)
 
 		CurrentPC->SetPlayerIndex(PlayerControllers.Find(CurrentPC));
 
+
 		AWJ_PlayerState* CurrentPS = CurrentPC->GetPlayerState<AWJ_PlayerState>();
+
 		if (CurrentPS)
 		{
 			GS->AddPlayerStates(CurrentPS);
 			CurrentPS->SetPlayerIndex(PlayerControllers.Find(CurrentPC));
+			CurrentPS->SetItemChecker(TestItems);
+			//CurrentPS->SetItemChecked(PlayerControllers.Find(CurrentPC) , true);
 		}
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Player Index is : %d"), PlayerControllers.Find(CurrentPC)));
