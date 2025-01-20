@@ -43,6 +43,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Index", Replicated)
 	int32 PlayerIndex;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Name", Replicated)
+	FString PlayerName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enhanced Input")
 	UInputMappingContext* GDCMotionMatching;
 
@@ -131,6 +134,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool GetIsReady();
 
+	// To check all player is ready for phase change
 	UFUNCTION(BlueprintCallable)
 	void SequanceChangeReady();
 
@@ -145,6 +149,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UnlinkSubsystem();
 
+	// Change Camera and AddMapping for Camera After Interacting Complete
 	UFUNCTION(BlueprintCallable)
 	void Interact_Camera();
 
@@ -154,6 +159,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DialogTest();
 
+	// Set Index to discrimination Players together
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerIndex(int32 NewIndex);
 

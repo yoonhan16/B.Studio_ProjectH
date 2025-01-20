@@ -127,6 +127,7 @@ void AWJ_PlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AWJ_PlayerController, PlayerIndex);
+	DOREPLIFETIME(AWJ_PlayerController, PlayerName);
 }
 
 void AWJ_PlayerController::Look(const FInputActionValue& Value)

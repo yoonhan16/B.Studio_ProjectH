@@ -155,6 +155,38 @@ FString AWJ_PlayerState::GetPlayerRole()
 	return PlayerRole;
 }
 
+void AWJ_PlayerState::SetPlayerName(const FString& NewName)
+{
+	if (HasAuthority())
+	{
+		Multi_SetPlayerName(NewName);
+	}
+	else
+	{
+		Server_SetPlayerName(NewName);
+	}
+}
+
+bool AWJ_PlayerState::Server_SetPlayerName_Validate(const FString& NewName)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Server_SetPlayerName_Implementation(const FString& NewName)
+{
+	Multi_SetPlayerName(NewName);
+}
+
+bool AWJ_PlayerState::Multi_SetPlayerName_Validate(const FString& NewName)
+{
+	return true;
+}
+
+void AWJ_PlayerState::Multi_SetPlayerName_Implementation(const FString& NewName)
+{
+	PlayerName = NewName;
+}
+
 void AWJ_PlayerState::SetItemChecker(const TArray<FItemCheckerStruct>& NewItems)
 {
 	if (HasAuthority())

@@ -20,6 +20,7 @@ void AWJ_GameModeBase::PostLogin(APlayerController* NewPlayer)
 
 	AWJ_PlayerController* CurrentPC = Cast<AWJ_PlayerController>(NewPlayer);
 
+	// To Grant identification number and default name for loginned player
 	if (CurrentPC)
 	{
 		PlayerControllers.AddUnique(CurrentPC);
@@ -28,19 +29,23 @@ void AWJ_GameModeBase::PostLogin(APlayerController* NewPlayer)
 
 		GS->AddPlayerControllers(CurrentPC);
 		GS->GetPlayersNum();
-		GS->GetSequanceReady();
+		//GS->GetSequanceReady();
 
 		//CurrentPC->SetPlayerControllerID(PlayerControllers.Find(CurrentPC));
 
-		CurrentPC->SetPlayerIndex(PlayerControllers.Find(CurrentPC));
+		int PlayerIndex = PlayerControllers.Find(CurrentPC);
 
+		CurrentPC->SetPlayerIndex(PlayerIndex);
 
 		AWJ_PlayerState* CurrentPS = CurrentPC->GetPlayerState<AWJ_PlayerState>();
 
 		if (CurrentPS)
 		{
+			FString DefaultName = FString(TEXT("Player")) + FString::FromInt(PlayerIndex);
+
 			GS->AddPlayerStates(CurrentPS);
-			CurrentPS->SetPlayerIndex(PlayerControllers.Find(CurrentPC));
+			CurrentPS->SetPlayerIndex(PlayerIndex);
+			CurrentPS->SetPlayerName(DefaultName);
 			CurrentPS->SetItemChecker(TestItems);
 			//CurrentPS->SetItemChecked(PlayerControllers.Find(CurrentPC) , true);
 		}

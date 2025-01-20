@@ -43,6 +43,9 @@ protected:
 	FString PlayerRole;
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	TArray<FItemCheckerStruct> ItemChecker;
 public:
 	UFUNCTION(BlueprintCallable)
@@ -63,9 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GetStateName();
 
+	// Set Index to identify Players together
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerIndex(int32 NewIndex);
-
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_SetPlayerIndex(int32 NewIndex);
@@ -80,6 +83,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetPlayerIndex();
 
+	// PlayerRole used to check other players role for proper operation
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerRole(const FString& NewRole);
 
@@ -95,6 +99,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FString GetPlayerRole();
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerName(const FString& NewName);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SetPlayerName(const FString& NewName);
+	bool Server_SetPlayerName_Validate(const FString& NewName);
+	void Server_SetPlayerName_Implementation(const FString& NewName);
+
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	void Multi_SetPlayerName(const FString& NewName);
+	bool Multi_SetPlayerName_Validate(const FString& NewName);
+	void Multi_SetPlayerName_Implementation(const FString& NewName);
 
 	UFUNCTION(BlueprintCallable)
 	void SetItemChecker(const TArray<FItemCheckerStruct>& NewItems);
