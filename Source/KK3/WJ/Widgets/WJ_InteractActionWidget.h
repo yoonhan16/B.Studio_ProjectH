@@ -36,6 +36,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Action();
 
+	
+
 public:
 
 	UFUNCTION()

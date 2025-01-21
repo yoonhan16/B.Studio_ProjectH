@@ -74,23 +74,23 @@ void AWJ_HUD::CallPhaseChange()
 
 void AWJ_HUD::RevealInfomation()
 {
-	if (InfomationWidget)
+	if (InformationWidget)
 	{
-		InfomationWidget->RemoveFromParent();
+		InformationWidget->RemoveFromParent();
 	}
 
 
 	if (InfomationWidgetClass)
 	{
-		InfomationWidget = Cast<UWJ_Widget>(CreateWidget(GetWorld(), InfomationWidgetClass));
+		InformationWidget = Cast<UWJ_Widget>(CreateWidget(GetWorld(), InfomationWidgetClass));
 
-		if (InfomationWidget)
+		if (InformationWidget)
 		{
 			AWJ_GameStateBase* GSB = Cast<AWJ_GameStateBase>(UGameplayStatics::GetGameState(GetWorld()));
 
-			InfomationWidget->SetDescriptionText(GSB->GetDialogText());
+			InformationWidget->SetDescriptionText(GSB->GetDialogText());
 
-			InfomationWidget->AddToViewport();
+			InformationWidget->AddToViewport();
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("RevealInfomation is Called!"));
 		}
 	}
@@ -98,9 +98,9 @@ void AWJ_HUD::RevealInfomation()
 
 void AWJ_HUD::SetInfomation(FText Info)
 {
-	if (InfomationWidget)
+	if (InformationWidget)
 	{
-		InfomationWidget->SetDescriptionText(Info);
+		InformationWidget->SetDescriptionText(Info);
 	}
 
 }

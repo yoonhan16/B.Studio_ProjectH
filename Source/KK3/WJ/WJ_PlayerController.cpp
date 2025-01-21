@@ -185,7 +185,8 @@ void AWJ_PlayerController::FocusHold(const FInputActionInstance& Instance)
 					SpringArm_Interact = WJ_Character->SpringArm_Interact;
 					Camera_Interact = WJ_Character->Camera_Interact;
 
-					Interact_Camera();
+					InteractingActor();
+					//Interact_Camera();
 				}
 
 				UnlinkSubsystem();
@@ -219,19 +220,26 @@ void AWJ_PlayerController::SetActionWidget(AWJ_InteractionActor* TargetActor)
 
 void AWJ_PlayerController::InteractingActor()
 {
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 
-	if (Subsystem)
+	if (InteractionActor)
 	{
-		Subsystem->AddMappingContext(InteractMappingContext, 0);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interact Mapping Contexted!"));
+		AWJ_HUD* Hud = Cast<AWJ_HUD>(GetHUD());
 
-		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(this->InputComponent);
-
-		EnhancedInputComponent->BindAction(HoldAction, ETriggerEvent::Triggered, this, &AWJ_PlayerController::FocusHold);
-
-		bShowMouseCursor = true;
 	}
+
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+	//if (Subsystem)
+	//{
+	//	Subsystem->AddMappingContext(InteractMappingContext, 0);
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interact Mapping Contexted!"));
+
+	//	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(this->InputComponent);
+
+	//	EnhancedInputComponent->BindAction(HoldAction, ETriggerEvent::Triggered, this, &AWJ_PlayerController::FocusHold);
+
+	//	bShowMouseCursor = true;
+	//}
 }
 
 void AWJ_PlayerController::DisconnectingActor()

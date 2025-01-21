@@ -156,6 +156,11 @@ TMap<FString, bool> AWJ_InteractionActor::GetActions()
 	return Actions;
 }
 
+TArray<FClueStruct> AWJ_InteractionActor::GetClueStructs()
+{
+	return ClueStructs;
+}
+
 void AWJ_InteractionActor::SetIsFocused(bool bFocused)
 {
 	bIsFocused = bFocused;

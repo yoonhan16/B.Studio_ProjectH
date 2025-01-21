@@ -95,6 +95,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
 	bool bIsTest;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FClueStruct> ClueStructs;
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -169,6 +171,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TMap<FString, bool> GetActions();
+
+	UFUNCTION(BlueprintCallable)
+	TArray<FClueStruct> GetClueStructs();
 
 	UFUNCTION(BlueprintCallable)
 	void SetIsFocused(bool bFocused);

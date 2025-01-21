@@ -33,6 +33,7 @@ public:
 	void Look(const FInputActionValue& Value);
 	void StopLook(const FInputActionValue& Value);
 	void Observe(const FInputActionValue& Value);
+	// To active after LinkSubsystem worked
 	void FocusHold(const FInputActionInstance& Instance);
 	void RequestPhaseChange(const FInputActionInstance& Instance);
 

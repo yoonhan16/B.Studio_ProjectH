@@ -64,6 +64,19 @@ public:
 	bool IsChecked = false;
 };
 
+USTRUCT(Atomic, BlueprintType)
+struct FClueStruct
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ClueNumber;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsChecked = false;
+};
+
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor
 {

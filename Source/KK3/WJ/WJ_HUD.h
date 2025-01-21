@@ -28,7 +28,7 @@ protected:
 	TSubclassOf<UWJ_Widget> InfomationWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
-	UWJ_Widget* InfomationWidget;
+	UWJ_Widget* InformationWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
 	UWJ_Widget* ActorInterfaceWidget;
