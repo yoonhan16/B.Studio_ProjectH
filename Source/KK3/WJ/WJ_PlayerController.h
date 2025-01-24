@@ -41,6 +41,7 @@ public:
 	bool bIsComplete;
 	bool bIsTest;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Index", Replicated)
 	int32 PlayerIndex;
 
@@ -70,6 +71,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void InteractingActor();
+
+	UFUNCTION(BlueprintCallable)
+	void EndInteractingActor();
 
 	UFUNCTION()
 	void DisconnectingActor();
@@ -116,7 +120,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCameraComponent* Camera_Interact;
 
-	bool IsFocus;
+	bool bIsFocus;
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite)
 	bool bIsReady;
@@ -130,10 +134,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadwrite)
 	class UWJ_Widget* InEar_Widget;
 
+	bool bIsGettingInfomation;
 public:
 
 	UFUNCTION(BlueprintCallable)
 	bool GetIsReady();
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsGettingInfomation(bool NewGetting);
 
 	// To check all player is ready for phase change
 	UFUNCTION(BlueprintCallable)

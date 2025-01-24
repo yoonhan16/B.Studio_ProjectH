@@ -24,12 +24,13 @@ AWJ_PlayerController::AWJ_PlayerController()
 	CameraMoveAction = nullptr;
 	CameraRotateAction = nullptr;
 
-	IsFocus = false;
+	bIsFocus = false;
 	bIsReady = false;
 	PlayerIndex = -1;
 	bReplicates = true;
 	bIsComplete = false;
 	bIsTest = true;
+	bIsGettingInfomation = false;
 
 	IA_SpringArm = nullptr;
 
@@ -134,7 +135,7 @@ void AWJ_PlayerController::Look(const FInputActionValue& Value)
 {
 	if(IsInteract)
 	{
-		IsFocus = true;
+		bIsFocus = true;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Is Can Focus!"));
 	}
 }
@@ -143,7 +144,7 @@ void AWJ_PlayerController::StopLook(const FInputActionValue& Value)
 {
 	if(IsInteract)
 	{
-		IsFocus = false;
+		bIsFocus = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Is Can not Focus"));
 	}
 }
@@ -242,6 +243,14 @@ void AWJ_PlayerController::InteractingActor()
 	//}
 }
 
+void AWJ_PlayerController::EndInteractingActor()
+{
+	if (bIsGettingInfomation)
+	{
+		AWJ_HUD* Hud = Cast<AWJ_HUD>(GetHUD());
+	}
+}
+
 void AWJ_PlayerController::DisconnectingActor()
 {
 	if (InteractionActor && InteractingWidget)
@@ -331,7 +340,7 @@ void AWJ_PlayerController::Focusing(const FInputActionValue& Value)
 
 	if (IsInteract)
 	{
-		IsFocus = true;
+		bIsFocus = true;
 	}
 }
 
@@ -339,7 +348,7 @@ void AWJ_PlayerController::StopFocus(const FInputActionValue& Value)
 {
 	if (IsInteract)
 	{
-		IsFocus = false;
+		bIsFocus = false;
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Is Can not Focus"));
 	}
 }
@@ -426,6 +435,11 @@ void AWJ_PlayerController::CameraRotate(const FInputActionValue& Value)
 bool AWJ_PlayerController::GetIsReady()
 {
 	return bIsReady;
+}
+
+void AWJ_PlayerController::SetIsGettingInfomation(bool NewGetting)
+{
+	bIsGettingInfomation = NewGetting;
 }
 
 void AWJ_PlayerController::SequanceChangeReady()

@@ -60,6 +60,15 @@ void AWJ_HUD::SetProgressPercent(float Percent)
 	}
 }
 
+void AWJ_HUD::ShowGettingInfomation()
+{
+	if(GettingInfomationWidget)
+	{
+		UWJ_Widget* GIWidget = CreateWidget<UWJ_Widget>(GetWorld(), GettingInfomationWidget);
+		GIWidget->AddToViewport();
+	}
+}
+
 void AWJ_HUD::UpdatePhaseChecker()
 {
 	if (PhaseCheckerWidget)

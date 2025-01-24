@@ -97,6 +97,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FClueStruct> ClueStructs;
+
+	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
+	TArray<FOptionalDescriptions> OptionalDescriptions;
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -172,6 +175,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TMap<FString, bool> GetActions();
 
+
+	// Struct index used to add listview item , bool used to change script texts detail.
 	UFUNCTION(BlueprintCallable)
 	TArray<FClueStruct> GetClueStructs();
 

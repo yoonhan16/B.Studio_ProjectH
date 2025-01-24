@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
 	TSubclassOf<UWJ_ActionListWidget> ActionListWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
+	TSubclassOf<UWJ_Widget> GettingInfomationWidget;
+
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -58,6 +61,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetProgressPercent(float Percent);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowGettingInfomation();
 
 protected:
 

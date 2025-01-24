@@ -52,6 +52,18 @@ public:
 };
 
 USTRUCT(Atomic, BlueprintType)
+struct FOptionalDescriptions
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> Descriptions;
+
+};
+
+
+USTRUCT(Atomic, BlueprintType)
 struct FItemCheckerStruct
 {
 	GENERATED_BODY()
@@ -59,6 +71,9 @@ struct FItemCheckerStruct
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FItemStruct ItemStruct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FOptionalDescriptions OptionalDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsChecked = false;
@@ -76,6 +91,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsChecked = false;
 };
+
+
 
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor

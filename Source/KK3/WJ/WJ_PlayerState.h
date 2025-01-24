@@ -47,6 +47,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	TArray<FItemCheckerStruct> ItemChecker;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);
