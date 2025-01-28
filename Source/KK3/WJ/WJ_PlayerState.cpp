@@ -32,6 +32,25 @@ void AWJ_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(AWJ_PlayerState, ItemChecker);
 }
 
+void AWJ_PlayerState::UpdateClue(int32 ClueIndex)
+{
+	for (int32 UpdateNum : AllClueList[ClueIndex].AfterClueList)
+	{
+		AllClueList[UpdateNum].BeforeCluesCheck++;
+		if ((AllClueList[UpdateNum].BeforeCluesCheck++ >= AllClueList[UpdateNum].BeforeCluesNumber) && AllClueList[UpdateNum].bIsAutoActive)
+		{
+			ActivateClue(UpdateNum);
+		}
+	}
+}
+
+void AWJ_PlayerState::ActivateClue(int32 ClueIndex)
+{
+	AllClueList[ClueIndex].bIsActive = true;
+
+	UpdateClue(ClueIndex);
+}
+
 void AWJ_PlayerState::AddActorProcedure(AWJ_InteractionActor* Actor)
 {
 	ActorProcedure.AddUnique(Actor);

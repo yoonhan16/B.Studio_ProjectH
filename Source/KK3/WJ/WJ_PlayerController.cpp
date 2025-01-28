@@ -226,6 +226,27 @@ void AWJ_PlayerController::InteractingActor()
 	{
 		AWJ_HUD* Hud = Cast<AWJ_HUD>(GetHUD());
 
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+		if (Subsystem && GDCMotionMatching)
+		{
+			Subsystem->RemoveMappingContext(GDCMotionMatching);
+
+			CameraStartLoc = Arrow_Interact->GetComponentLocation();
+			CameraStartRot = Arrow_Interact->GetComponentRotation();
+
+			CameraEndLoc = InteractionActor->SpringArm_Interact->GetComponentLocation();
+			CameraEndRot = InteractionActor->SpringArm_Interact->GetComponentRotation();
+
+			SpringArm_Interact->bUsePawnControlRotation = false;
+			SpringArm_Interact->bDoCollisionTest = false;
+
+			Arrow_Interact->SetWorldLocation(CameraEndLoc);
+			Arrow_Interact->SetWorldRotation(CameraEndRot);
+
+			Camera_Character->SetActive(false);
+			Camera_Interact->SetActive(true);
+		}
 	}
 
 	//UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());

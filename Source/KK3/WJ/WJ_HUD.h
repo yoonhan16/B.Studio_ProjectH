@@ -37,13 +37,15 @@ protected:
 	UWJ_Widget* MouseFocusWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
-	TSubclassOf<UWJ_Widget> InteractionInterfaceWidget;
+	TSubclassOf<UWJ_Widget> Interaction_ActionScriptWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
 	TSubclassOf<UWJ_ActionListWidget> ActionListWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Infomation")
 	TSubclassOf<UWJ_Widget> GettingInfomationWidget;
+
+	
 
 public:
 

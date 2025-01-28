@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "WJ_ItemStruct.generated.h"
 
+struct FActionRequirements;
+
 USTRUCT(Atomic, BlueprintType)
 struct FSlotStruct
 {
@@ -92,7 +94,56 @@ public:
 	bool bIsChecked = false;
 };
 
+// Not only using clue , but also using on branch and scripts
+USTRUCT(Atomic, BlueprintType)
+struct FLinkedClue
+{
+	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsActive = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsAutoActive = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsKey = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 BeforeCluesCheck = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 BeforeCluesNumber = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<int32> AfterClueList;
+};
+
+// To check what clue is available that each Interaction Actors
+USTRUCT(Atomic, BlueprintType)
+struct FActionRequirements
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<int32> CheckList;
+};
+
+// Showing what player is able to action with that interaction actor
+USTRUCT(Atomic, BlueprintType)
+struct FActionScriptStruct
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FActionRequirements> ActionValidator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> ActionScript;
+};
 
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor

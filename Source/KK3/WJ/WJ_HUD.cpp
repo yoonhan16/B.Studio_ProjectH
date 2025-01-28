@@ -19,9 +19,9 @@ void AWJ_HUD::BeginPlay()
 
 void AWJ_HUD::SetInteractionWidget()
 {
-	if (InteractionInterfaceWidget)
+	if (Interaction_ActionScriptWidget)
 	{
-		ActorInterfaceWidget = Cast<UWJ_Widget>(InteractionInterfaceWidget);
+		ActorInterfaceWidget = Cast<UWJ_Widget>(Interaction_ActionScriptWidget);
 	}
 }
 

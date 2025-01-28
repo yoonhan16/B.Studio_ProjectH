@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "../WJ_ItemStruct.h"
 #include "WJ_Widget.generated.h"
 
 /**
@@ -42,4 +43,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdatePhaseCheckList();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct);
 };

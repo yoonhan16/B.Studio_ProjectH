@@ -48,7 +48,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	TArray<FItemCheckerStruct> ItemChecker;
 
+	// Include all clue this array
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	TArray<FLinkedClue> AllClueList;
 public:
+	UFUNCTION(BlueprintCallable)
+	void UpdateClue(int32 ClueIndex);
+
+	UFUNCTION(BlueprintCallable)
+	void ActivateClue(int32 ClueIndex);
+
 	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);
 

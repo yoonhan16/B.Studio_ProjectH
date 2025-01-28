@@ -41,6 +41,9 @@ public:
 	USpringArmComponent* SpringArm_Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* SpringArm_Interact;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<USpringArmComponent*> CameraPoints;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -97,6 +100,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FClueStruct> ClueStructs;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FActionScriptStruct ActionScriptStruct;
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	TArray<FOptionalDescriptions> OptionalDescriptions;
@@ -179,6 +185,9 @@ public:
 	// Struct index used to add listview item , bool used to change script texts detail.
 	UFUNCTION(BlueprintCallable)
 	TArray<FClueStruct> GetClueStructs();
+
+	UFUNCTION(BlueprintCallable)
+	FActionScriptStruct GetActionScriptStruct();
 
 	UFUNCTION(BlueprintCallable)
 	void SetIsFocused(bool bFocused);

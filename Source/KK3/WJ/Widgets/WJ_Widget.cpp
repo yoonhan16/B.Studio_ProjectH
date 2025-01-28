@@ -2,6 +2,7 @@
 
 
 #include "WJ_Widget.h"
+#include "../WJ_ItemStruct.h"
 #include "Components/ProgressBar.h"
 #include "Components/VerticalBox.h"
 #include "Components/MultiLineEditableTextBox.h"
@@ -41,5 +42,38 @@ void UWJ_Widget::UpdatePhaseCheckList()
 	if (PhaseCheckList)
 	{
 
+	}
+}
+
+void UWJ_Widget::UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct)
+{
+	
+
+	if (NewActionScriptStruct.ActionValidator.Num() > 1)
+	{
+		int32 Count = 0;
+
+		for (FActionRequirements ActionScript : NewActionScriptStruct.ActionValidator)
+		{
+			bool Available = true;
+
+			for (int32 Action : ActionScript.CheckList)
+			{
+
+				// Get PlayerState and check clue is active 
+				// if not active clue , break this
+				//if()
+			}
+
+
+			if (NewActionScriptStruct.ActionScript.IsValidIndex(Count) && Available)
+			{
+				NewActionScriptStruct.ActionScript[Count];
+
+				// add item in listview
+			}
+
+			Count++;
+		}
 	}
 }

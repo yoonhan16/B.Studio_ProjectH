@@ -36,6 +36,9 @@ AWJ_InteractionActor::AWJ_InteractionActor()
 	SpringArm_Camera = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm_Camera"));
 	SpringArm_Camera->SetupAttachment(StaticMesh);
 
+	SpringArm_Interact = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm_Interact"));
+	SpringArm_Interact->SetupAttachment(StaticMesh);
+
 	CurrentWidget = nullptr;
 	bCanInteract = true;
 	bReplicates = true;
@@ -159,6 +162,11 @@ TMap<FString, bool> AWJ_InteractionActor::GetActions()
 TArray<FClueStruct> AWJ_InteractionActor::GetClueStructs()
 {
 	return ClueStructs;
+}
+
+FActionScriptStruct AWJ_InteractionActor::GetActionScriptStruct()
+{
+	return ActionScriptStruct;
 }
 
 void AWJ_InteractionActor::SetIsFocused(bool bFocused)
