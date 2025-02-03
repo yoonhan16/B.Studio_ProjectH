@@ -32,23 +32,56 @@ void AWJ_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(AWJ_PlayerState, ItemChecker);
 }
 
-void AWJ_PlayerState::UpdateClue(int32 ClueIndex)
+void AWJ_PlayerState::InitializeClueMap()
 {
-	for (int32 UpdateNum : AllClueList[ClueIndex].AfterClueList)
+	ClueIndexMap.Empty();
+
+	for (int32 i = 0; i < ClueDatabase.Num(); i++)
 	{
-		AllClueList[UpdateNum].BeforeCluesCheck++;
-		if ((AllClueList[UpdateNum].BeforeCluesCheck++ >= AllClueList[UpdateNum].BeforeCluesNumber) && AllClueList[UpdateNum].bIsAutoActive)
+		ClueIndexMap.Add(ClueDatabase[i].ClueID, i);
+	}
+}
+
+void AWJ_PlayerState::UpdateClue(int32 ClueID)
+{
+	if (!ClueIndexMap.Contains(ClueID))
+	{
+		return;
+	}
+
+	int32 ClueIndex = ClueIndexMap[ClueID];
+	FLinkedClue& CurrentClue = ClueDatabase[ClueIndex];
+
+	for (int32 NextClueID : CurrentClue.AfterClueList)
+	{
+		if (!ClueIndexMap.Contains(NextClueID))
 		{
-			ActivateClue(UpdateNum);
+			continue;
+		}
+
+		int32 NextClueIndex = ClueIndexMap[NextClueID];
+		FLinkedClue& NextClue = ClueDatabase[NextClueIndex];
+		NextClue.BeforeCluesCheck++;
+
+		if ((NextClue.BeforeCluesCheck >= NextClue.BeforeClueList.Num()) && NextClue.bIsAutoActive)
+		{
+			ActivateClue(NextClueID);
 		}
 	}
 }
 
-void AWJ_PlayerState::ActivateClue(int32 ClueIndex)
+void AWJ_PlayerState::ActivateClue(int32 ClueID)
 {
-	AllClueList[ClueIndex].bIsActive = true;
+	if (!ClueIndexMap.Contains(ClueID)) return;
 
-	UpdateClue(ClueIndex);
+	int32 ClueIndex = ClueIndexMap[ClueID];
+	FLinkedClue& Clue = ClueDatabase[ClueIndex];
+	
+	if (Clue.bIsActive) return;
+
+	Clue.bIsActive = true;
+
+	UpdateClue(ClueID);
 }
 
 void AWJ_PlayerState::AddActorProcedure(AWJ_InteractionActor* Actor)

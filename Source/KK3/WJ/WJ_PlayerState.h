@@ -50,13 +50,18 @@ protected:
 
 	// Include all clue this array
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
-	TArray<FLinkedClue> AllClueList;
+	TArray<FLinkedClue> ClueDatabase;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<int32, int32> ClueIndexMap;
 public:
-	UFUNCTION(BlueprintCallable)
-	void UpdateClue(int32 ClueIndex);
+	void InitializeClueMap();
 
 	UFUNCTION(BlueprintCallable)
-	void ActivateClue(int32 ClueIndex);
+	void UpdateClue(int32 ClueID);
+
+	UFUNCTION(BlueprintCallable)
+	void ActivateClue(int32 ClueID);
 
 	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);

@@ -102,6 +102,9 @@ struct FLinkedClue
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ClueID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsActive = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -114,7 +117,7 @@ public:
 	int32 BeforeCluesCheck = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 BeforeCluesNumber = 0;
+	TArray<int32> BeforeClueList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<int32> AfterClueList;
