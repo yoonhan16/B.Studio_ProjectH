@@ -19,4 +19,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ActionName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> Scripts;
 };

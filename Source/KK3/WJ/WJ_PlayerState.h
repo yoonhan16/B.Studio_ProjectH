@@ -64,6 +64,9 @@ public:
 	void ActivateClue(int32 ClueID);
 
 	UFUNCTION(BlueprintCallable)
+	bool IsClueActive(int32 ClueID);
+
+	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);
 
 	UFUNCTION(BlueprintCallable)

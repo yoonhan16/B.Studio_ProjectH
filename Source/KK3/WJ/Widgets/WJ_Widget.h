@@ -44,6 +44,4 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdatePhaseCheckList();
 
-	UFUNCTION(BlueprintCallable)
-	void UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct);
 };

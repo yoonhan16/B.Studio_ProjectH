@@ -84,6 +84,13 @@ void AWJ_PlayerState::ActivateClue(int32 ClueID)
 	UpdateClue(ClueID);
 }
 
+bool AWJ_PlayerState::IsClueActive(int32 ClueID)
+{
+	int32 ClueIndex = ClueIndexMap[ClueID];
+
+	return ClueDatabase[ClueIndex].bIsActive;
+}
+
 void AWJ_PlayerState::AddActorProcedure(AWJ_InteractionActor* Actor)
 {
 	ActorProcedure.AddUnique(Actor);

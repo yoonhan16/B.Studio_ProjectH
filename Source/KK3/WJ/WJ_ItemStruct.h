@@ -134,6 +134,19 @@ public:
 	TArray<int32> CheckList;
 };
 
+USTRUCT(BlueprintType)
+struct FActionEntry
+{
+	GENERATED_BODY();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ActionName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> Descriptions;
+};
+
 // Showing what player is able to action with that interaction actor
 USTRUCT(Atomic, BlueprintType)
 struct FActionScriptStruct
@@ -145,7 +158,7 @@ public:
 	TArray<FActionRequirements> ActionValidator;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FString> ActionScript;
+	TArray<FActionEntry> ActionScripts;
 };
 
 UCLASS()
