@@ -161,6 +161,27 @@ public:
 	TArray<FActionEntry> ActionScripts;
 };
 
+UENUM(BlueprintType)
+enum class EDialogueType : uint8
+{
+	Normal,
+	End
+};
+
+USTRUCT(Atomic, BlueprintType)
+struct FDialogueEntry
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString DialogueText;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EDialogueType DialogueType = EDialogueType::Normal;
+
+};
+
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor
 {

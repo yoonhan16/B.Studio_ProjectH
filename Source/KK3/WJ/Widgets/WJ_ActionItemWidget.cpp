@@ -49,6 +49,11 @@ void UWJ_ActionItemWidget::OnActionSelected()
 	{
 		ParentActionsWidget->UpdateSelectedAction(this);
 		ParentActionsWidget->HideListView();
+
+		if (Scripts.Num() > 0)
+		{
+			ParentActionsWidget->DisplayScript(Scripts[0]);
+		}
 	}
 
 	ExecuteScript();
@@ -105,3 +110,5 @@ void UWJ_ActionItemWidget::ExecuteScript()
 		//ParentActionsWidget
 	}
 }
+
+

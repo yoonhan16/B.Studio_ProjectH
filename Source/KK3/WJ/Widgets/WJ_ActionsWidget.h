@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ListView.h"
+#include "Components/TextBlock.h"
+#include "Animation/WidgetAnimation.h"
 #include "WJ_Widget.h"
 #include "../WJ_ItemStruct.h"
 #include "WJ_ActionsWidget.generated.h"
@@ -26,6 +28,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
 	TSubclassOf<UUserWidget> ActionItemWidgetClass;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* ScriptText;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct);
@@ -44,4 +50,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowListView();
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayScript(const FString& Script);
+
+	UFUNCTION(BlueprintCallable)
+	void NextScript();
+
+	UFUNCTION(BlueprintCallable)
+	UWidgetAnimation* FindAnimation(const FName& AnimationName);
 };

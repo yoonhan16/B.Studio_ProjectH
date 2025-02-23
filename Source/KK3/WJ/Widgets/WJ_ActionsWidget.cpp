@@ -4,6 +4,8 @@
 #include "WJ_ActionsWidget.h"
 #include "../WJ_PlayerState.h"
 #include "../WJ_Object.h"
+#include "Animation/WidgetAnimation.h"
+#include "UObject/UnrealType.h"
 #include "WJ_ActionItemWidget.h"
 
 void UWJ_ActionsWidget::NativeConstruct()
@@ -102,3 +104,36 @@ void UWJ_ActionsWidget::ShowListView()
 	}
 }
 
+void UWJ_ActionsWidget::DisplayScript(const FString& Script)
+{
+	if (ScriptText)
+	{
+		ScriptText->SetText(FText::FromString(Script));
+
+		ScriptText->SetRenderOpacity(0.0f);
+		UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
+	}
+}
+
+void UWJ_ActionsWidget::NextScript()
+{
+
+}
+
+UWidgetAnimation* UWJ_ActionsWidget::FindAnimation(const FName& AnimationName)
+{
+	FProperty* Prop = GetClass()->FindPropertyByName(AnimationName);
+
+	if (Prop)
+	{
+		FObjectProperty* ObjProp = CastField<FObjectProperty>(Prop);
+
+		if (ObjProp)
+		{
+			UObject* Obj = ObjProp->GetObjectPropertyValue_InContainer(this);
+			return (Obj && Obj->IsA<UWidgetAnimation>()) ? Cast<UWidgetAnimation>(Obj) : nullptr ;
+		}
+	}
+
+	return nullptr;
+}

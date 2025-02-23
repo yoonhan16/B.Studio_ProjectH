@@ -7,6 +7,7 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
+#include "WJ_ActionsWidget.h"
 #include "WJ_ActionItemWidget.generated.h"
 
 /**
@@ -54,4 +55,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ExecuteScript();
+
 };
