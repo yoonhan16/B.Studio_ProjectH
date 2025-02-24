@@ -25,6 +25,7 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 	int32 Count = 0;
 
 	bool Available = true;
+	bool bHasValidActions = false;
 
 	for (FActionRequirements ActionScript : NewActionScriptStruct.ActionValidator)
 	{
@@ -39,9 +40,7 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 			}
 			// Get PlayerState and check clue is active 
 			// if not active clue , break this
-			//if()
 		}
-
 
 		if (NewActionScriptStruct.ActionScripts.IsValidIndex(Count) && Available)
 		{
@@ -55,6 +54,14 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 
 		Count++;
 
+	}
+
+	if (!bHasValidActions)
+	{
+		UWJ_Object* EmptyActionData = NewObject<UWJ_Object>(this);
+		EmptyActionData->ActionName = TEXT("조사를 마쳤습니다.");
+		EmptyActionData->Scripts.Add(FDialogueEntry{ TEXT("더 이상 조사할 것이 없습니다."), EDialogueType::End });
+		ActionListView->AddItem(EmptyActionData);
 	}
 
 }

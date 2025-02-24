@@ -8,6 +8,21 @@
 
 struct FActionRequirements;
 
+UENUM(BlueprintType)
+enum class EDialogueType : uint8
+{
+	Normal,
+	End
+};
+
+UENUM(BlueprintType)
+enum class EActionType : uint8
+{
+	Dialogue,
+	Investigation,
+	SpecialEvent
+};
+
 USTRUCT(Atomic, BlueprintType)
 struct FSlotStruct
 {
@@ -134,13 +149,6 @@ public:
 	TArray<int32> CheckList;
 };
 
-UENUM(BlueprintType)
-enum class EDialogueType : uint8
-{
-	Normal,
-	End
-};
-
 USTRUCT(Atomic, BlueprintType)
 struct FDialogueEntry
 {
@@ -153,6 +161,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EDialogueType DialogueType = EDialogueType::Normal;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 NextIndex = -1;
 };
 
 USTRUCT(BlueprintType)
@@ -165,7 +175,16 @@ public:
 	FString ActionName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EActionType ActionType = EActionType::Dialogue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDialogueEntry> Descriptions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bRequiresCondition = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<int32> RequiredClues;
 };
 
 // Showing what player is able to action with that interaction actor

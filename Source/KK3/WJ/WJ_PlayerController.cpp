@@ -37,6 +37,8 @@ AWJ_PlayerController::AWJ_PlayerController()
 	Arrow_Interact = nullptr;
 	SpringArm_Interact = nullptr;
 	Camera_Interact = nullptr;
+
+	ActionsWidget = nullptr;
 }
 
 void AWJ_PlayerController::BeginPlay()
@@ -219,6 +221,25 @@ void AWJ_PlayerController::SetActionWidget(AWJ_InteractionActor* TargetActor)
 
 }
 
+UWJ_ActionsWidget* AWJ_PlayerController::GetActionsWidget()
+{
+	if (!ActionsWidget)
+	{
+		if(!ActionsWidgetClass) return nullptr;
+
+		ActionsWidget = CreateWidget<UWJ_ActionsWidget>(this, ActionsWidgetClass);
+
+		if (ActionsWidget)
+		{
+			ActionsWidget->AddToViewport();
+			ActionsWidget->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
+
+	return ActionsWidget;
+	
+}
+
 void AWJ_PlayerController::InteractingActor()
 {
 
@@ -247,7 +268,11 @@ void AWJ_PlayerController::InteractingActor()
 			Camera_Character->SetActive(false);
 			Camera_Interact->SetActive(true);
 		}
+
+		InteractionActor->OnInteract(this);
 	}
+
+
 
 	//UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 

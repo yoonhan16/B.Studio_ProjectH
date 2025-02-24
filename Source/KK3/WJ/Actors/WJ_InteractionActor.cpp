@@ -5,6 +5,7 @@
 #include "../WJ_Character.h"
 #include "../Widgets/WJ_InteractingWidget.h"
 #include "../Widgets/WJ_Widget.h"
+#include "../Widgets/WJ_ActionsWidget.h"
 #include "../WJ_PlayerController.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
@@ -38,6 +39,11 @@ AWJ_InteractionActor::AWJ_InteractionActor()
 
 	SpringArm_Interact = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm_Interact"));
 	SpringArm_Interact->SetupAttachment(StaticMesh);
+
+	InteractingWidget = nullptr;
+	InvestigatingWidget = nullptr;
+	IsFocusWidget = nullptr;
+	ProgressiveNum = -1;
 
 	CurrentWidget = nullptr;
 	bCanInteract = true;
@@ -313,38 +319,19 @@ void AWJ_InteractionActor::Multicast_IsCanInteract_Implementation()
 	bCanInteract = false;
 }
 
-void AWJ_InteractionActor::Interacting()
+void AWJ_InteractionActor::OnInteract(AWJ_PlayerController* PlayerController)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interacting Called!"));
-	//if (InteractingWidgetClass)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("InteractingWidgetClass is Valid!"));
-	//	InteractingWidget = Cast<UWJ_InteractingWidget>(CreateWidget(GetWorld(), InteractingWidgetClass));
-	//	InteractingWidget->AddToViewport();
 
-	//	class APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	//	
-	//	if (PC->IsLocalController())
-	//	{
-	//		//Scene2D->TextureTarget = RenderTarget2D;
-	//	}
-	//	
-	//	class AWJ_PlayerController* WJPC = Cast<AWJ_PlayerController>(PC);
+	if (!PlayerController) return;
 
-	//	if (WJPC)
-	//	{
-	//		WJPC->InteractingWidget = InteractingWidget;
-	//		WJPC->IA_SpringArm = SpringArm_Scene2D;
-	//	}
+	UWJ_ActionsWidget* ActionsWidget = PlayerController->GetActionsWidget();
 
-	//	Scene2D->ShowOnlyActorComponents(this);
-	//	
-	//	class ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	//	Character->DisableInput(PC);
-	//}
-
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interacting Function is Called!"));
-	
+	if (ActionsWidget)
+	{
+		ActionsWidget->UpdateAvailableActions(ActionScriptStruct);
+		ActionsWidget->ShowListView();
+	}
 }
 
 void AWJ_InteractionActor::Investigating()
@@ -455,3 +442,34 @@ void AWJ_InteractionActor::IsCanInteract()
 		Server_IsCanInteract();
 	}
 }
+
+//Interacting() Codes
+
+	//if (InteractingWidgetClass)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("InteractingWidgetClass is Valid!"));
+	//	InteractingWidget = Cast<UWJ_InteractingWidget>(CreateWidget(GetWorld(), InteractingWidgetClass));
+	//	InteractingWidget->AddToViewport();
+
+	//	class APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	//	
+	//	if (PC->IsLocalController())
+	//	{
+	//		//Scene2D->TextureTarget = RenderTarget2D;
+	//	}
+	//	
+	//	class AWJ_PlayerController* WJPC = Cast<AWJ_PlayerController>(PC);
+
+	//	if (WJPC)
+	//	{
+	//		WJPC->InteractingWidget = InteractingWidget;
+	//		WJPC->IA_SpringArm = SpringArm_Scene2D;
+	//	}
+
+	//	Scene2D->ShowOnlyActorComponents(this);
+	//	
+	//	class ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	//	Character->DisableInput(PC);
+	//}
+
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interacting Function is Called!"));

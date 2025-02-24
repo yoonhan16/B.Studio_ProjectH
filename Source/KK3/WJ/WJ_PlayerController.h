@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
+#include "Widgets/WJ_ActionsWidget.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "WJ_FocusDataAsset.h"
@@ -66,8 +67,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enhanced Input")
 	UInputAction* CameraRotateAction;
 
+	// not using function what replace down function with new structs
 	UFUNCTION(BlueprintCallable)
 	void SetActionWidget(AWJ_InteractionActor* TargetActor);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UWJ_ActionsWidget> ActionsWidgetClass;
+
+	UPROPERTY()
+	UWJ_ActionsWidget* ActionsWidget;
+
+	UFUNCTION(BlueprintCallable)
+	UWJ_ActionsWidget* GetActionsWidget();
 
 	UFUNCTION(BlueprintCallable)
 	void InteractingActor();

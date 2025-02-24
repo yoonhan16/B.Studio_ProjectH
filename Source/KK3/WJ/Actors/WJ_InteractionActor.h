@@ -109,7 +109,7 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void Interacting();
+	void OnInteract(AWJ_PlayerController* PlayerController);
 
 	UFUNCTION(BlueprintCallable)
 	void Investigating();
@@ -178,9 +178,9 @@ protected:
 
 public:
 
+	// Not using function
 	UFUNCTION(BlueprintCallable)
 	TMap<FString, bool> GetActions();
-
 
 	// Struct index used to add listview item , bool used to change script texts detail.
 	UFUNCTION(BlueprintCallable)
