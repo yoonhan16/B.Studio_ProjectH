@@ -134,33 +134,6 @@ public:
 	TArray<int32> CheckList;
 };
 
-USTRUCT(BlueprintType)
-struct FActionEntry
-{
-	GENERATED_BODY();
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ActionName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FString> Descriptions;
-};
-
-// Showing what player is able to action with that interaction actor
-USTRUCT(Atomic, BlueprintType)
-struct FActionScriptStruct
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FActionRequirements> ActionValidator;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FActionEntry> ActionScripts;
-};
-
 UENUM(BlueprintType)
 enum class EDialogueType : uint8
 {
@@ -181,6 +154,34 @@ public:
 	EDialogueType DialogueType = EDialogueType::Normal;
 
 };
+
+USTRUCT(BlueprintType)
+struct FActionEntry
+{
+	GENERATED_BODY();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ActionName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDialogueEntry> Descriptions;
+};
+
+// Showing what player is able to action with that interaction actor
+USTRUCT(Atomic, BlueprintType)
+struct FActionScriptStruct
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FActionRequirements> ActionValidator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FActionEntry> ActionScripts;
+};
+
 
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor

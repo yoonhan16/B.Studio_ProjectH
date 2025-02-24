@@ -6,10 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/ListView.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
 #include "Animation/WidgetAnimation.h"
 #include "WJ_Widget.h"
 #include "../WJ_ItemStruct.h"
 #include "WJ_ActionsWidget.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueEnded);
 
 /**
  * 
@@ -32,6 +35,16 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* ScriptText;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* NextButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDialogueEntry> CurrentScripts;
+
+	int32 CurrentScriptIndex = 0;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDialogueEnded OnDialogueEnded;
 public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct);
@@ -52,10 +65,13 @@ public:
 	void ShowListView();
 
 	UFUNCTION(BlueprintCallable)
-	void DisplayScript(const FString& Script);
+	void DisplayScript(TArray<FDialogueEntry> NewScripts);
 
 	UFUNCTION(BlueprintCallable)
 	void NextScript();
+	
+	UFUNCTION(BlueprintCallable)
+	void HandleEndOfDialogue();
 
 	UFUNCTION(BlueprintCallable)
 	UWidgetAnimation* FindAnimation(const FName& AnimationName);

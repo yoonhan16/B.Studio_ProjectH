@@ -52,12 +52,12 @@ void UWJ_ActionItemWidget::OnActionSelected()
 
 		if (Scripts.Num() > 0)
 		{
-			ParentActionsWidget->DisplayScript(Scripts[0]);
+			ParentActionsWidget->DisplayScript(Scripts);
 		}
 	}
 
-	ExecuteScript();
 }
+
 
 void UWJ_ActionItemWidget::OnHoveredEffect()
 {
@@ -105,10 +105,7 @@ void UWJ_ActionItemWidget::ResetStyle()
 
 void UWJ_ActionItemWidget::ExecuteScript()
 {
-	for (const FString& Line : Scripts)
-	{
-		//ParentActionsWidget
-	}
+
 }
 
 

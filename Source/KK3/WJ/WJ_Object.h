@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "WJ_ItemStruct.h"
 #include "WJ_Object.generated.h"
 
 /**
@@ -20,5 +21,5 @@ public:
 	FString ActionName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FString> Scripts;
+	TArray<FDialogueEntry> Scripts;
 };

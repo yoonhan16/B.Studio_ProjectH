@@ -12,6 +12,7 @@ void UWJ_ActionsWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+
 }
 
 void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct)
@@ -104,20 +105,76 @@ void UWJ_ActionsWidget::ShowListView()
 	}
 }
 
-void UWJ_ActionsWidget::DisplayScript(const FString& Script)
+void UWJ_ActionsWidget::DisplayScript(TArray<FDialogueEntry> NewScripts)
 {
+	if (NewScripts.Num() == 0) return;
+
+	CurrentScripts = NewScripts;
+	CurrentScriptIndex = 0;
+
 	if (ScriptText)
 	{
-		ScriptText->SetText(FText::FromString(Script));
-
+		ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
 		ScriptText->SetRenderOpacity(0.0f);
+
 		UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
+		
+		if (FadeInAnimation)
+		{
+			PlayAnimation(FadeInAnimation);
+		}
+	}
+
+	if (NextButton)
+	{
+		NextButton->SetVisibility(ESlateVisibility::Visible);
+		NextButton->OnClicked.AddDynamic(this, &UWJ_ActionsWidget::NextScript);
+
 	}
 }
 
 void UWJ_ActionsWidget::NextScript()
 {
+	CurrentScriptIndex++;
 
+	if (CurrentScriptIndex < CurrentScripts.Num())
+	{
+		if (ScriptText)
+		{
+			ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
+			ScriptText->SetRenderOpacity(0.0f);
+
+			UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
+
+			if (FadeInAnimation)
+			{
+				PlayAnimation(FadeInAnimation);
+			}
+		
+		}
+	}
+	else
+	{
+		HandleEndOfDialogue();
+	}
+
+}
+
+void UWJ_ActionsWidget::HandleEndOfDialogue()
+{
+	if (ScriptText)
+	{
+		ScriptText->SetText(FText::FromString(""));
+		ScriptText->SetRenderOpacity(0.0f);
+	}
+
+	if (NextButton)
+	{
+		NextButton->SetVisibility(ESlateVisibility::Collapsed);
+		NextButton->OnClicked.Clear();
+	}
+
+	ShowListView();
 }
 
 UWidgetAnimation* UWJ_ActionsWidget::FindAnimation(const FName& AnimationName)

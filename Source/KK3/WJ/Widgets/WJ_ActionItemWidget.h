@@ -29,7 +29,7 @@ protected:
 	UTextBlock* ActionText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FString> Scripts;
+	TArray<FDialogueEntry> Scripts;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* ActionButton;
