@@ -26,6 +26,9 @@ public:
 	virtual void NativeConstruct() override;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintCallable)
+	AWJ_PlayerController* OwnerPlayerController;
+
 	UPROPERTY(meta = (BindWidget))
 	UListView* ActionListView;
 
@@ -38,6 +41,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* NextButton;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* CloseButton;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDialogueEntry> CurrentScripts;
 
@@ -46,6 +52,9 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnDialogueEnded OnDialogueEnded;
 public:
+	UFUNCTION()
+	void InitializeWidget(AWJ_PlayerController* InPlayerController);
+
 	UFUNCTION(BlueprintCallable)
 	void UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct);
 
@@ -57,6 +66,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnActionUnhovered(UWJ_ActionItemWidget* UnhoveredItem);
+
+	UFUNCTION(BlueprintCallable)
+	void OnCloseButtonClicked();
 
 	UFUNCTION(BlueprintCallable)
 	void HideListView();

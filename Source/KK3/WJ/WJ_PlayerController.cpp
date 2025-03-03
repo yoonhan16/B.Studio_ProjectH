@@ -231,6 +231,7 @@ UWJ_ActionsWidget* AWJ_PlayerController::GetActionsWidget()
 
 		if (ActionsWidget)
 		{
+			ActionsWidget->InitializeWidget(this);
 			ActionsWidget->AddToViewport();
 			ActionsWidget->SetVisibility(ESlateVisibility::Collapsed);
 		}

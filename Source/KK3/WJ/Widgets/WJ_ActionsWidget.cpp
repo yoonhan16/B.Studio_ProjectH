@@ -4,6 +4,7 @@
 #include "WJ_ActionsWidget.h"
 #include "../WJ_PlayerState.h"
 #include "../WJ_Object.h"
+#include "../WJ_PlayerController.h"
 #include "Animation/WidgetAnimation.h"
 #include "UObject/UnrealType.h"
 #include "WJ_ActionItemWidget.h"
@@ -13,6 +14,11 @@ void UWJ_ActionsWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 
+}
+
+void UWJ_ActionsWidget::InitializeWidget(AWJ_PlayerController* InPlayerController)
+{
+	OwnerPlayerController = InPlayerController;
 }
 
 void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct)
@@ -94,6 +100,17 @@ void UWJ_ActionsWidget::OnActionUnhovered(UWJ_ActionItemWidget* UnhoveredItem)
 	if (!UnhoveredItem) return;
 
 	UnhoveredItem->ResetStyle();
+}
+
+void UWJ_ActionsWidget::OnCloseButtonClicked()
+{
+	if (OwnerPlayerController)
+	{
+		OwnerPlayerController->ActionsWidget = nullptr;
+	}
+
+	this->RemoveFromParent();
+	MarkAsGarbage();
 }
 
 void UWJ_ActionsWidget::HideListView()
