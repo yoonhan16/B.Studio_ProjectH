@@ -26,7 +26,7 @@ public:
 	virtual void NativeConstruct() override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintCallable)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AWJ_PlayerController* OwnerPlayerController;
 
 	UPROPERTY(meta = (BindWidget))

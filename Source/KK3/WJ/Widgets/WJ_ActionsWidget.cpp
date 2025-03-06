@@ -62,7 +62,7 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 
 	}
 
-	if (!bHasValidActions)
+	if (Count == 0)
 	{
 		UWJ_Object* EmptyActionData = NewObject<UWJ_Object>(this);
 		EmptyActionData->ActionName = TEXT("조사를 마쳤습니다.");

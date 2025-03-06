@@ -202,6 +202,7 @@ public:
 };
 
 
+
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor
 {
