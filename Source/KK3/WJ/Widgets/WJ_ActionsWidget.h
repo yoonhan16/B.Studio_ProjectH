@@ -68,7 +68,13 @@ public:
 	void OnActionUnhovered(UWJ_ActionItemWidget* UnhoveredItem);
 
 	UFUNCTION(BlueprintCallable)
+	void OnNextButtonClicked();
+
+	UFUNCTION(BlueprintCallable)
 	void OnCloseButtonClicked();
+
+	UFUNCTION(BlueprintCallable)
+	void EnableNextButton(bool bEnable);
 
 	UFUNCTION(BlueprintCallable)
 	void HideListView();
@@ -86,5 +92,8 @@ public:
 	void HandleEndOfDialogue();
 
 	UFUNCTION(BlueprintCallable)
-	UWidgetAnimation* FindAnimation(const FName& AnimationName);
+	void RestoreActionSelectionUi();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetActionList();
 };

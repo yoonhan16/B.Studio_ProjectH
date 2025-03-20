@@ -64,7 +64,10 @@ public:
 	void ActivateClue(int32 ClueID);
 
 	UFUNCTION(BlueprintCallable)
-	bool IsClueActive(int32 ClueID);
+	bool IsClueActive(int32 ClueID) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Condition")
+	bool IsConditionMet(const FActionEntry& Entry) const;
 
 	UFUNCTION(BlueprintCallable)
 	void AddActorProcedure(AWJ_InteractionActor* Actor);

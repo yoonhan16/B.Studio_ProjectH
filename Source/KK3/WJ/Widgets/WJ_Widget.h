@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "../WJ_ItemStruct.h"
+#include "../WJ_Object.h"
 #include "WJ_Widget.generated.h"
 
 /**
@@ -44,4 +45,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdatePhaseCheckList();
 
+	UFUNCTION(BlueprintCallable)
+	UWidgetAnimation* FindAnimation(const FName& AnimationName);
+
+	UFUNCTION(BlueprintCallable)
+	void HighlightSelectedQuestion(UWJ_Object* SelectedQuestion, UListView* ListView);
 };

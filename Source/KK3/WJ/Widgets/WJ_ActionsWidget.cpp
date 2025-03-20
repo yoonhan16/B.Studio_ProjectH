@@ -5,6 +5,7 @@
 #include "../WJ_PlayerState.h"
 #include "../WJ_Object.h"
 #include "../WJ_PlayerController.h"
+#include "Components/ListView.h"
 #include "Animation/WidgetAnimation.h"
 #include "UObject/UnrealType.h"
 #include "WJ_ActionItemWidget.h"
@@ -13,7 +14,18 @@ void UWJ_ActionsWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	if (NextButton)
+	{
+		NextButton->SetIsEnabled(false);
+		NextButton->OnClicked.AddDynamic(this, &UWJ_ActionsWidget::OnNextButtonClicked);
+	}
 
+	if (CloseButton)
+	{
+		CloseButton->OnClicked.AddDynamic(this, &UWJ_ActionsWidget::OnCloseButtonClicked);
+	}
+
+	OnDialogueEnded.AddDynamic(this, &UWJ_ActionsWidget::RestoreActionSelectionUi);
 }
 
 void UWJ_ActionsWidget::InitializeWidget(AWJ_PlayerController* InPlayerController)
@@ -23,6 +35,8 @@ void UWJ_ActionsWidget::InitializeWidget(AWJ_PlayerController* InPlayerControlle
 
 void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScriptStruct)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("UpdateAvailableActions is Called"));
+
 	AWJ_PlayerState* PlayerState = GetOwningPlayerState<AWJ_PlayerState>();
 	if (!PlayerState || !ActionListView || !ActionItemWidgetClass) return;
 
@@ -33,43 +47,40 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 	bool Available = true;
 	bool bHasValidActions = false;
 
-	for (FActionRequirements ActionScript : NewActionScriptStruct.ActionValidator)
+	for (const FActionEntry& ActionEntry : NewActionScriptStruct.ActionScripts)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Check the ActionEntry"));
+
 		Available = true;
 
-		for (int32 RequiredClueID : ActionScript.CheckList)
-		{
-			if (!PlayerState->IsClueActive(RequiredClueID))
-			{
-				Available = false;
-				break;
-			}
-			// Get PlayerState and check clue is active 
-			// if not active clue , break this
-		}
-
-		if (NewActionScriptStruct.ActionScripts.IsValidIndex(Count) && Available)
+		if (PlayerState->IsConditionMet(ActionEntry))
 		{
 			UWJ_Object* NewActionData = NewObject<UWJ_Object>(this);
-			NewActionData->ActionName = NewActionScriptStruct.ActionScripts[Count].ActionName;
-			NewActionData->Scripts = NewActionScriptStruct.ActionScripts[Count].Descriptions;			
+			NewActionData->ActionName = ActionEntry.ActionName;
+			NewActionData->Scripts = ActionEntry.Descriptions;		
+			NewActionData->ParentWidget = this;
 
 			ActionListView->AddItem(NewActionData);
 
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("ActionData is Add!"));
 		}
 
 		Count++;
 
 	}
 
-	if (Count == 0)
+	if (ActionListView->GetNumItems() == 0)
 	{
-		UWJ_Object* EmptyActionData = NewObject<UWJ_Object>(this);
-		EmptyActionData->ActionName = TEXT("조사를 마쳤습니다.");
-		EmptyActionData->Scripts.Add(FDialogueEntry{ TEXT("더 이상 조사할 것이 없습니다."), EDialogueType::End });
-		ActionListView->AddItem(EmptyActionData);
+		UWJ_Object* NoActionData = NewObject<UWJ_Object>(this);
+		NoActionData->ActionName = TEXT("조사를 마쳤습니다.");
+		NoActionData->Scripts.Add(FDialogueEntry{ TEXT("더 이상 조사할 것이 없습니다."), EDialogueType::End });
+		ActionListView->AddItem(NoActionData);
 	}
 
+	if (NextButton)
+	{
+		EnableNextButton(false);
+	}
 }
 
 void UWJ_ActionsWidget::UpdateSelectedAction(UWJ_ActionItemWidget* SelectedItem)
@@ -102,6 +113,10 @@ void UWJ_ActionsWidget::OnActionUnhovered(UWJ_ActionItemWidget* UnhoveredItem)
 	UnhoveredItem->ResetStyle();
 }
 
+void UWJ_ActionsWidget::OnNextButtonClicked()
+{
+}
+
 void UWJ_ActionsWidget::OnCloseButtonClicked()
 {
 	if (OwnerPlayerController)
@@ -113,11 +128,19 @@ void UWJ_ActionsWidget::OnCloseButtonClicked()
 	MarkAsGarbage();
 }
 
+void UWJ_ActionsWidget::EnableNextButton(bool bEnable)
+{
+	if (NextButton)
+	{
+		NextButton->SetIsEnabled(bEnable);
+	}
+}
+
 void UWJ_ActionsWidget::HideListView()
 {
 	if (ActionListView)
 	{
-		ActionListView->SetVisibility(ESlateVisibility::Collapsed);
+		ActionListView->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -186,35 +209,50 @@ void UWJ_ActionsWidget::NextScript()
 
 void UWJ_ActionsWidget::HandleEndOfDialogue()
 {
+	//if (ScriptText)
+	//{
+	//	ScriptText->SetText(FText::FromString(""));
+	//	ScriptText->SetRenderOpacity(0.0f);
+	//}
+
+	RestoreActionSelectionUi();
+
+	if (NextButton)
+	{
+		EnableNextButton(false);
+		NextButton->OnClicked.Clear();
+	}
+
+	OnDialogueEnded.Broadcast();
+}
+
+void UWJ_ActionsWidget::RestoreActionSelectionUi()
+{
+	if (ActionListView)
+	{
+		ShowListView();
+	}
+
 	if (ScriptText)
 	{
-		ScriptText->SetText(FText::FromString(""));
-		ScriptText->SetRenderOpacity(0.0f);
+		ScriptText->SetText(FText::GetEmpty());
 	}
 
 	if (NextButton)
 	{
-		NextButton->SetVisibility(ESlateVisibility::Collapsed);
-		NextButton->OnClicked.Clear();
+		EnableNextButton(false);
 	}
 
-	ShowListView();
+	if (CloseButton)
+	{
+		CloseButton->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
-UWidgetAnimation* UWJ_ActionsWidget::FindAnimation(const FName& AnimationName)
+void UWJ_ActionsWidget::ResetActionList()
 {
-	FProperty* Prop = GetClass()->FindPropertyByName(AnimationName);
-
-	if (Prop)
+	if (ActionListView)
 	{
-		FObjectProperty* ObjProp = CastField<FObjectProperty>(Prop);
-
-		if (ObjProp)
-		{
-			UObject* Obj = ObjProp->GetObjectPropertyValue_InContainer(this);
-			return (Obj && Obj->IsA<UWidgetAnimation>()) ? Cast<UWidgetAnimation>(Obj) : nullptr ;
-		}
+		ActionListView->ClearListItems();
 	}
-
-	return nullptr;
 }

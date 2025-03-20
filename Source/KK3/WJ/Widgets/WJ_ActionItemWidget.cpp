@@ -4,6 +4,7 @@
 #include "WJ_ActionItemWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "WJ_ActionsWidget.h"
+#include "Components/Button.h"
 #include "../WJ_ItemStruct.h"
 #include "../WJ_Object.h"
 
@@ -23,15 +24,11 @@ void UWJ_ActionItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	{
 
 		Scripts = ActionData->Scripts;
+		ParentActionsWidget = Cast<UWJ_ActionsWidget>(ActionData->ParentWidget);
 
 		if(ActionText)
 		{
 			ActionText->SetText(FText::FromString(ActionData->ActionName));
-		}
-
-		if (!ParentActionsWidget)
-		{
-			ParentActionsWidget = Cast<UWJ_ActionsWidget>(GetOuter());
 		}
 
 		if (ActionButton)
@@ -45,14 +42,19 @@ void UWJ_ActionItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void UWJ_ActionItemWidget::OnActionSelected()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("OnActionSelected is Called"));
+
 	if (ParentActionsWidget)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("ParentActionsWidget is Collect"));
+
 		ParentActionsWidget->UpdateSelectedAction(this);
 		ParentActionsWidget->HideListView();
 
 		if (Scripts.Num() > 0)
 		{
 			ParentActionsWidget->DisplayScript(Scripts);
+			ParentActionsWidget->EnableNextButton(true);
 		}
 	}
 
@@ -79,13 +81,19 @@ void UWJ_ActionItemWidget::HighlightStyle()
 {
 	if (ActionText)
 	{
+		FLinearColor TargetColor = FLinearColor(1.0f, 0.8f, 0.2f, 1.0f);
 		ActionText->SetRenderScale(FVector2D(1.1f, 1.1f));
-		ActionText->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.8f, 0.2f, 1.0f)));
+
+		ActionText->SetColorAndOpacity(TargetColor);
 	}
 
 	if (ActionButton)
 	{
-		ActionButton->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor(0.9f, 0.7f, 0.0f, 1.0f));
+		FButtonStyle NewStyle = ActionButton->
+			GetStyle();
+		NewStyle.Normal.TintColor = FSlateColor(FLinearColor(0.9f, 0.7f, 0.0f, 1.0f));
+		NewStyle.Hovered.TintColor = FSlateColor(FLinearColor(1.0f, 0.8f, 0.2f, 1.0f));
+		ActionButton->SetStyle(NewStyle);
 	}
 }
 
@@ -93,13 +101,18 @@ void UWJ_ActionItemWidget::ResetStyle()
 {
 	if (ActionText)
 	{
+		FLinearColor DefaultColor = FLinearColor::White;
 		ActionText->SetRenderScale(FVector2D(1.0f, 1.0f));
-		ActionText->SetColorAndOpacity(FSlateColor(FLinearColor::White));
+
+		ActionText->SetColorAndOpacity(DefaultColor);
 	}
 
 	if (ActionButton)
 	{
-		ActionButton->WidgetStyle.Normal.TintColor = FSlateColor(FLinearColor::White);
+		FButtonStyle DefaultStyle = ActionButton->GetStyle();
+		DefaultStyle.Normal.TintColor = FSlateColor(FLinearColor::White);
+		DefaultStyle.Hovered.TintColor = FSlateColor(FLinearColor::White);
+		ActionButton->SetStyle(DefaultStyle);
 	}
 }
 

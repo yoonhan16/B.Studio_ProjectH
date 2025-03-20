@@ -22,4 +22,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDialogueEntry> Scripts;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWJ_Widget* ParentWidget;
 };

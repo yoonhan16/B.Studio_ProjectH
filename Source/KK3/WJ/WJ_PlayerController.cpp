@@ -233,8 +233,10 @@ UWJ_ActionsWidget* AWJ_PlayerController::GetActionsWidget()
 		{
 			ActionsWidget->InitializeWidget(this);
 			ActionsWidget->AddToViewport();
-			ActionsWidget->SetVisibility(ESlateVisibility::Collapsed);
+			//ActionsWidget->SetVisibility(ESlateVisibility::Collapsed);
 		}
+
+		SetShowMouseCursor(true);
 	}
 
 	return ActionsWidget;

@@ -84,11 +84,36 @@ void AWJ_PlayerState::ActivateClue(int32 ClueID)
 	UpdateClue(ClueID);
 }
 
-bool AWJ_PlayerState::IsClueActive(int32 ClueID)
+bool AWJ_PlayerState::IsClueActive(int32 ClueID) const
 {
+	if (!ClueIndexMap.Contains(ClueID))
+	{
+		return false;
+	}
+
 	int32 ClueIndex = ClueIndexMap[ClueID];
 
+	if (!ClueDatabase.IsValidIndex(ClueIndex))
+	{
+		return false;
+	}
+
 	return ClueDatabase[ClueIndex].bIsActive;
+}
+
+bool AWJ_PlayerState::IsConditionMet(const FActionEntry& Entry) const
+{
+	if (Entry.RequiredClues.Num() == 0) return true;
+
+	for (int32 ClueID : Entry.RequiredClues)
+	{
+		if (!IsClueActive(ClueID))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void AWJ_PlayerState::AddActorProcedure(AWJ_InteractionActor* Actor)

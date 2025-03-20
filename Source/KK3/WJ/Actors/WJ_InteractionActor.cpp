@@ -331,6 +331,7 @@ void AWJ_InteractionActor::OnInteract(AWJ_PlayerController* PlayerController)
 	{
 		ActionsWidget->UpdateAvailableActions(ActionScriptStruct);
 		ActionsWidget->ShowListView();
+		ActionsWidget->AddToViewport();
 	}
 }
 

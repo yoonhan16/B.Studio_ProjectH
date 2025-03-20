@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "WJ_Widget.h"
 #include "Components/TextBlock.h"
 #include "Components/ListView.h"
 #include "Components/Button.h"
@@ -15,7 +16,7 @@
  * 
  */
 UCLASS()
-class KK3_API UWJ_InterrogationWidget : public UUserWidget
+class KK3_API UWJ_InterrogationWidget : public UWJ_Widget
 {
 	GENERATED_BODY()
 	
@@ -42,6 +43,10 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnDialogueEnded OnDialogueEnded;
+
+	FTimerHandle NextButtonEnableTimer;
+
+	FTimerHandle AutoProceedTimer;
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -55,4 +60,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EndInterrogation();
+
+	UFUNCTION(BlueprintCallable)
+	void OnDialogueUpdated();
+
+	UFUNCTION(blueprintCallable)
+	void EnableNextButton();
 };

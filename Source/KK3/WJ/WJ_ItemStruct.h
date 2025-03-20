@@ -195,9 +195,6 @@ struct FActionScriptStruct
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FActionRequirements> ActionValidator;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FActionEntry> ActionScripts;
 };
 
