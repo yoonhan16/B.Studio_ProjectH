@@ -214,5 +214,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddItemStruct(FItemStruct NewItemStruct);
 
+	UFUNCTION(BlueprintCallable)
+	void SubmitClueToProfiler(const FClueMessage& ClueMessage);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SubmitClueToProfiler(const FClueMessage& ClueMessage);
+	bool Server_SubmitClueToProfiler_Validate(const FClueMessage& ClueMessage);
+	void Server_SubmitClueToProfiler_Implementation(const FClueMessage& ClueMessage);
+
+	UFUNCTION(Client, Reliable, WithValidation)
+	void Client_ReceiveClueFromInvestigator(const FClueMessage& ClueMessage);
+	bool Client_ReceiveClueFromInvestigator_Validate(const FClueMessage& ClueMessage);
+	void Client_ReceiveClueFromInvestigator_Implementation(const FClueMessage& ClueMessage);
+
+	UFUNCTION(BlueprintCallable)
+	FClueMessage CreateClueMessageFromClue(const FClueData& Clue, const FString& CustomDescription);
+
+	UFUNCTION(BlueprintCallable)
+	void SwapPlayerRole();
 };
 

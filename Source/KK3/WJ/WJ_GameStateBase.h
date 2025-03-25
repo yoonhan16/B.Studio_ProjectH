@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "WJ_ItemStruct.h"
 #include "WJ_GameStateBase.generated.h"
 
 /**
@@ -28,6 +29,9 @@ public:
 
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	EGamePlayMode GamePlayMode = EGamePlayMode::Single;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<class AWJ_InteractionActor*> ClueCheckList;
 
@@ -43,6 +47,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FString> PlayerRoleList;
 public:
+	UFUNCTION(BlueprintCallable)
+	bool IsSingleGame();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsMultiGame();
 
 	UFUNCTION(BlueprintCallable)
 	bool GetClueCheck(int32 ClueNum);

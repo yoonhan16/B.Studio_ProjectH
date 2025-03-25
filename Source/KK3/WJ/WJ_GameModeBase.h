@@ -8,6 +8,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "WJ_GameModeBase.generated.h"
 
+
 /**
  * 
  */
@@ -42,6 +43,9 @@ public:
 	void GetPlayersReady();
 
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EGamePlayMode GamePlayMode = EGamePlayMode::Single;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<AWJ_PlayerController*> PlayerControllers;

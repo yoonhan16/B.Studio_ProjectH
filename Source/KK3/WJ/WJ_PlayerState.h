@@ -11,13 +11,13 @@
  * 
  */
 
-UENUM(BlueprintType)
-enum class EPlayerRole : uint8
-{
-	None UMETA(DisplayName = "None"),
-	Detactor UMETA(DisplayName = "Detactor"),
-	Negotiator UMETA(DisplayName = "Negotiator")
-};
+//UENUM(BlueprintType)
+//enum class EPlayerRole : uint8
+//{
+//	None UMETA(DisplayName = "None"),
+//	Detactor UMETA(DisplayName = "Detactor"),
+//	Negotiator UMETA(DisplayName = "Negotiator")
+//};
 
 UCLASS()
 class KK3_API AWJ_PlayerState : public APlayerState
@@ -40,7 +40,7 @@ protected:
 	int32 PlayerIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
-	FString PlayerRole;
+	EPlayerRole PlayerRole = EPlayerRole::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadwrite, Replicated)
 	FString PlayerName;
@@ -106,20 +106,26 @@ public:
 
 	// PlayerRole used to check other players role for proper operation
 	UFUNCTION(BlueprintCallable)
-	void SetPlayerRole(const FString& NewRole);
+	void SetPlayerRole(const EPlayerRole& NewRole);
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void Server_SetPlayerRole(const FString& NewRole);
-	bool Server_SetPlayerRole_Validate(const FString& NewRole);
-	void Server_SetPlayerRole_Implementation(const FString& NewRole);
+	void Server_SetPlayerRole(const EPlayerRole& NewRole);
+	bool Server_SetPlayerRole_Validate(const EPlayerRole& NewRole);
+	void Server_SetPlayerRole_Implementation(const EPlayerRole& NewRole);
 
 	UFUNCTION(NetMulticast, Reliable, WithValidation)
-	void Multi_SetPlayerRole(const FString& NewRole);
-	bool Multi_SetPlayerRole_Validate(const FString& NewRole);
-	void Multi_SetPlayerRole_Implementation(const FString& NewRole);
+	void Multi_SetPlayerRole(const EPlayerRole& NewRole);
+	bool Multi_SetPlayerRole_Validate(const EPlayerRole& NewRole);
+	void Multi_SetPlayerRole_Implementation(const EPlayerRole& NewRole);
 
 	UFUNCTION(BlueprintCallable)
-	FString GetPlayerRole();
+	EPlayerRole GetPlayerRole();
+
+	UFUNCTION(BlueprintCallable, Category = "PlayerRole")
+	bool IsProfiler() const { return PlayerRole == EPlayerRole::Profiler; }
+
+	UFUNCTION(BlueprintCallable, Category = "PlayerRole")
+	bool IsInvestigator() const { return PlayerRole == EPlayerRole::Investigator; }
 
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerName(const FString& NewName);

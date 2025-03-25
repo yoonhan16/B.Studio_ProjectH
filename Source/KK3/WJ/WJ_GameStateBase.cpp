@@ -35,11 +35,22 @@ void AWJ_GameStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 
 	DOREPLIFETIME(AWJ_GameStateBase, PlayerControllers);
 	DOREPLIFETIME(AWJ_GameStateBase, PlayerStates);
+
 }
 
 void AWJ_GameStateBase::GetPlayersNum()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Players Num is : %s"), *FString::FromInt(PlayerArray.Num())));
+}
+
+bool AWJ_GameStateBase::IsSingleGame()
+{
+	return GamePlayMode == EGamePlayMode::Single;
+}
+
+bool AWJ_GameStateBase::IsMultiGame()
+{
+	return GamePlayMode == EGamePlayMode::Multi;
 }
 
 bool AWJ_GameStateBase::GetClueCheck(int32 ClueNum)

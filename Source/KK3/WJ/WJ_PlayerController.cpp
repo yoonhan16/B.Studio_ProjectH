@@ -734,7 +734,7 @@ bool AWJ_PlayerController::Client_CallInEar_Validate()
 
 void AWJ_PlayerController::Client_CallInEar_Implementation()
 {
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Client CallInEar is Called!"));
 }
 
 void AWJ_PlayerController::AddItemStruct(FItemStruct NewItemStruct)
@@ -748,5 +748,63 @@ void AWJ_PlayerController::AddItemStruct(FItemStruct NewItemStruct)
 		//ItemCheckerStruct.IsChecked = true;
 
 		PS->AddItemChecker(ItemCheckerStruct);
+	}
+}
+
+void AWJ_PlayerController::SubmitClueToProfiler(const FClueMessage& ClueMessage)
+{
+
+}
+
+bool AWJ_PlayerController::Server_SubmitClueToProfiler_Validate(const FClueMessage& ClueMessage)
+{
+	return true;
+}
+
+void AWJ_PlayerController::Server_SubmitClueToProfiler_Implementation(const FClueMessage& ClueMessage)
+{
+
+}
+
+bool AWJ_PlayerController::Client_ReceiveClueFromInvestigator_Validate(const FClueMessage& ClueMessage)
+{
+	return true;
+}
+
+void AWJ_PlayerController::Client_ReceiveClueFromInvestigator_Implementation(const FClueMessage& ClueMessage)
+{
+
+}
+
+FClueMessage AWJ_PlayerController::CreateClueMessageFromClue(const FClueData& Clue, const FString& CustomDescription)
+{
+	FClueMessage Message;
+
+	Message.ClueID = Clue.ClueID;
+	Message.ClueTitle = Clue.Title;
+	Message.CustomDescription = CustomDescription;
+	Message.SenderPlayerID = PlayerIndex;
+	Message.SentTime = FDateTime::Now();
+
+	return Message;
+}
+
+void AWJ_PlayerController::SwapPlayerRole()
+{
+	AWJ_PlayerState* PS = GetPlayerState<AWJ_PlayerState>();
+	
+	AWJ_GameStateBase* GS = Cast<AWJ_GameStateBase>(GetWorld()->GetGameState());
+
+	if (!PS || !GS) return;
+
+	if (!GS->IsSingleGame()) return;
+
+	if (PS->GetPlayerRole() == EPlayerRole::Profiler)
+	{
+		PS->SetPlayerRole(EPlayerRole::Investigator);
+	}
+	else
+	{
+		PS->SetPlayerRole(EPlayerRole::Profiler);
 	}
 }

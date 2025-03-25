@@ -9,6 +9,22 @@
 struct FActionRequirements;
 
 UENUM(BlueprintType)
+enum class EGamePlayMode : uint8
+{
+	Single UMETA(DisplayName = "SinglePlayer"),
+	Multi UMETA(DisplayName = "MultiPlayer")
+};
+
+
+UENUM(BlueprintType)
+enum class EPlayerRole : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Profiler UMETA(DisplayName = "Profiler"),
+	Investigator UMETA(DisplayName = "Investigator")
+};
+
+UENUM(BlueprintType)
 enum class EDialogueType : uint8
 {
 	Normal,
@@ -198,7 +214,46 @@ public:
 	TArray<FActionEntry> ActionScripts;
 };
 
+USTRUCT(Atomic, BlueprintType)
+struct FClueData
+{
+	GENERATED_BODY()
 
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ClueID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Title;
+
+};
+
+USTRUCT(BlueprintType)
+struct FClueMessage
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ClueID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ClueTitle;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString CustomDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 SenderPlayerID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDateTime SentTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsReviewed = false;
+
+};
 
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor

@@ -199,7 +199,7 @@ int32 AWJ_PlayerState::GetPlayerIndex()
 	return PlayerIndex;
 }
 
-void AWJ_PlayerState::SetPlayerRole(const FString& NewRole)
+void AWJ_PlayerState::SetPlayerRole(const EPlayerRole& NewRole)
 {
 	if (HasAuthority())
 	{
@@ -211,30 +211,30 @@ void AWJ_PlayerState::SetPlayerRole(const FString& NewRole)
 	}
 }
 
-bool AWJ_PlayerState::Server_SetPlayerRole_Validate(const FString& NewRole)
+bool AWJ_PlayerState::Server_SetPlayerRole_Validate(const EPlayerRole& NewRole)
 {
 	return true;
 }
 
-void AWJ_PlayerState::Server_SetPlayerRole_Implementation(const FString& NewRole)
+void AWJ_PlayerState::Server_SetPlayerRole_Implementation(const EPlayerRole& NewRole)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Server Function is Called"));
 	Multi_SetPlayerRole(NewRole);
 }
 
-bool AWJ_PlayerState::Multi_SetPlayerRole_Validate(const FString& NewRole)
+bool AWJ_PlayerState::Multi_SetPlayerRole_Validate(const EPlayerRole& NewRole)
 {
 	return true;
 }
 
-void AWJ_PlayerState::Multi_SetPlayerRole_Implementation(const FString& NewRole)
+void AWJ_PlayerState::Multi_SetPlayerRole_Implementation(const EPlayerRole& NewRole)
 {
 	PlayerRole = NewRole;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Multi Function is Called, NewRole is : %s"), *PlayerRole));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Multi Function is Called, NewRole is : %s"), PlayerRole));
 
 }
 
-FString AWJ_PlayerState::GetPlayerRole()
+EPlayerRole AWJ_PlayerState::GetPlayerRole()
 {
 	return PlayerRole;
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../WJ_ItemStruct.h"
 #include "WJ_TestActor.generated.h"
 
 UCLASS()
@@ -42,7 +43,7 @@ protected:
 	int32 ActorNumber;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ActorRole;
+	EPlayerRole ActorRole = EPlayerRole::None;
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
