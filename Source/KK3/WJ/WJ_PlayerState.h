@@ -119,7 +119,7 @@ public:
 	void Multi_SetPlayerRole_Implementation(const EPlayerRole& NewRole);
 
 	UFUNCTION(BlueprintCallable)
-	EPlayerRole GetPlayerRole();
+	EPlayerRole GetPlayerRole() const;
 
 	UFUNCTION(BlueprintCallable, Category = "PlayerRole")
 	bool IsProfiler() const { return PlayerRole == EPlayerRole::Profiler; }

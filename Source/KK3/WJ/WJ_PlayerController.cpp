@@ -9,6 +9,7 @@
 #include "WJ_GameStateBase.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WJ_InteractingWidget.h"
+#include "Widgets/WJ_ClueReceiveWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -83,6 +84,8 @@ void AWJ_PlayerController::BeginPlay()
 void AWJ_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+
+	InputComponent->BindAction("SwapRole", IE_Pressed, this, &AWJ_PlayerController::SwapPlayerRole);
 }
 
 void AWJ_PlayerController::Tick(float DeltaTime)
@@ -756,25 +759,39 @@ void AWJ_PlayerController::SubmitClueToProfiler(const FClueMessage& ClueMessage)
 
 }
 
-bool AWJ_PlayerController::Server_SubmitClueToProfiler_Validate(const FClueMessage& ClueMessage)
+bool AWJ_PlayerController::Server_SubmitClueToProfiler_Validate(const FSubmittedClue& SubmittedClue)
 {
 	return true;
 }
 
-void AWJ_PlayerController::Server_SubmitClueToProfiler_Implementation(const FClueMessage& ClueMessage)
+void AWJ_PlayerController::Server_SubmitClueToProfiler_Implementation(const FSubmittedClue& SubmittedClue)
 {
+	if (GetWorld())
+	{
+		AWJ_GameModeBase* GM = Cast<AWJ_GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (GM)
+		{
+
+		}
+	}
 
 }
 
-bool AWJ_PlayerController::Client_ReceiveClueFromInvestigator_Validate(const FClueMessage& ClueMessage)
+bool AWJ_PlayerController::Client_ReceiveClue_Validate(const FSubmittedClue& ReceivedClue)
 {
 	return true;
 }
 
-void AWJ_PlayerController::Client_ReceiveClueFromInvestigator_Implementation(const FClueMessage& ClueMessage)
+void AWJ_PlayerController::Client_ReceiveClue_Implementation(const FSubmittedClue& ReceivedClue)
 {
+	ReceivedClues.Add(ReceivedClue);
 
+	if (ClueReceiveWidget)
+	{
+		ClueReceiveWidget->
+	}
 }
+
 
 FClueMessage AWJ_PlayerController::CreateClueMessageFromClue(const FClueData& Clue, const FString& CustomDescription)
 {
@@ -789,6 +806,18 @@ FClueMessage AWJ_PlayerController::CreateClueMessageFromClue(const FClueData& Cl
 	return Message;
 }
 
+EPlayerRole AWJ_PlayerController::GetPlayerRole() const
+{
+	const AWJ_PlayerState* PS = GetPlayerState<AWJ_PlayerState>();
+	if (!PS)
+	{
+		return EPlayerRole::Investigator;
+	}
+
+
+	return PS->GetPlayerRole();
+}
+
 void AWJ_PlayerController::SwapPlayerRole()
 {
 	AWJ_PlayerState* PS = GetPlayerState<AWJ_PlayerState>();
@@ -799,12 +828,24 @@ void AWJ_PlayerController::SwapPlayerRole()
 
 	if (!GS->IsSingleGame()) return;
 
-	if (PS->GetPlayerRole() == EPlayerRole::Profiler)
+	EPlayerRole CurrentRole = PS->GetPlayerRole();
+	PS->SetPlayerRole(CurrentRole == EPlayerRole::Profiler ? EPlayerRole::Investigator : EPlayerRole::Profiler);
+
+	if (CurrentRoleWidget)
 	{
-		PS->SetPlayerRole(EPlayerRole::Investigator);
+		CurrentRoleWidget->RemoveFromParent();
+		CurrentRoleWidget = nullptr;
 	}
-	else
+
+	TSubclassOf<UUserWidget> WidgetClassToUse = (PS->GetPlayerRole() == EPlayerRole::Profiler) ? ProfilerWidgetClass : InvestigatorWidgetClass;
+
+	if (WidgetClassToUse)
 	{
-		PS->SetPlayerRole(EPlayerRole::Profiler);
+		CurrentRoleWidget = CreateWidget<UUserWidget>(this, WidgetClassToUse);
+		if (CurrentRoleWidget)
+		{
+			CurrentRoleWidget->AddToViewport();
+		}
 	}
+
 }

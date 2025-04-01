@@ -229,12 +229,15 @@ bool AWJ_PlayerState::Multi_SetPlayerRole_Validate(const EPlayerRole& NewRole)
 
 void AWJ_PlayerState::Multi_SetPlayerRole_Implementation(const EPlayerRole& NewRole)
 {
-	PlayerRole = NewRole;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Multi Function is Called, NewRole is : %s"), PlayerRole));
+	if(NewRole == EPlayerRole::Profiler || NewRole == EPlayerRole::Investigator)
+	{
+		PlayerRole = NewRole;
+	}
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Multi Function is Called, NewRole is : %s"), PlayerRole));
 
 }
 
-EPlayerRole AWJ_PlayerState::GetPlayerRole()
+EPlayerRole AWJ_PlayerState::GetPlayerRole() const
 {
 	return PlayerRole;
 }

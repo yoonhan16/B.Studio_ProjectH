@@ -89,4 +89,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int32 GetPlayerIndex(APlayerController* PC);
+
+	UFUNCTION(BlueprintCallable)
+	void RouteClueToProfiler(const FSubmittedClue& SubmittedClue);
 };

@@ -156,3 +156,16 @@ int32 AWJ_GameModeBase::GetPlayerIndex(APlayerController* PC)
 		return -1;
 	}
 }
+
+void AWJ_GameModeBase::RouteClueToProfiler(const FSubmittedClue& SubmittedClue)
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		AWJ_PlayerController* PC = Cast<AWJ_PlayerController>(It->Get());
+		if (PC && PC->GetPlayerRole() == EPlayerRole::Profiler)
+		{
+
+			break;
+		}
+	}
+}

@@ -255,6 +255,32 @@ public:
 
 };
 
+USTRUCT(BlueprintType)
+struct FSubmittedClue
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 OriginalClueID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString CustomName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString CustomDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 SenderPlayerIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsConfirmed = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDateTime SubmittedAt;
+};
+
 UCLASS()
 class KK3_API AWJ_ItemStruct : public AActor
 {

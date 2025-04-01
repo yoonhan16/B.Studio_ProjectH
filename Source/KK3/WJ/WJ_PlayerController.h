@@ -122,6 +122,14 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	TSubclassOf<UUserWidget> ProfilerWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> InvestigatorWidgetClass;
+
+	UUserWidget* CurrentRoleWidget = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UArrowComponent* Arrow_Interact;
 
@@ -146,6 +154,12 @@ protected:
 	class UWJ_Widget* InEar_Widget;
 
 	bool bIsGettingInfomation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FSubmittedClue> ReceivedClues;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWJ_ClueReceiveWidget* ClueReceiveWidget;
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -218,17 +232,21 @@ public:
 	void SubmitClueToProfiler(const FClueMessage& ClueMessage);
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void Server_SubmitClueToProfiler(const FClueMessage& ClueMessage);
-	bool Server_SubmitClueToProfiler_Validate(const FClueMessage& ClueMessage);
-	void Server_SubmitClueToProfiler_Implementation(const FClueMessage& ClueMessage);
+	void Server_SubmitClueToProfiler(const FSubmittedClue& SubmittedClue);
+	bool Server_SubmitClueToProfiler_Validate(const FSubmittedClue& SubmittedClue);
+	void Server_SubmitClueToProfiler_Implementation(const FSubmittedClue& SubmittedClue);
 
 	UFUNCTION(Client, Reliable, WithValidation)
-	void Client_ReceiveClueFromInvestigator(const FClueMessage& ClueMessage);
-	bool Client_ReceiveClueFromInvestigator_Validate(const FClueMessage& ClueMessage);
-	void Client_ReceiveClueFromInvestigator_Implementation(const FClueMessage& ClueMessage);
+	void Client_ReceiveClue(const FSubmittedClue& ReceivedClue);
+	bool Client_ReceiveClue_Validate(const FSubmittedClue& ReceivedClue);
+	void Client_ReceiveClue_Implementation(const FSubmittedClue& ReceivedClue);
+
 
 	UFUNCTION(BlueprintCallable)
 	FClueMessage CreateClueMessageFromClue(const FClueData& Clue, const FString& CustomDescription);
+
+	UFUNCTION(BlueprintCallable)
+	EPlayerRole GetPlayerRole() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SwapPlayerRole();
