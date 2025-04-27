@@ -788,7 +788,7 @@ void AWJ_PlayerController::Client_ReceiveClue_Implementation(const FSubmittedClu
 
 	if (ClueReceiveWidget)
 	{
-		ClueReceiveWidget->
+		//ClueReceiveWidget->
 	}
 }
 

@@ -53,7 +53,7 @@ void UWJ_ActionsWidget::UpdateAvailableActions(FActionScriptStruct NewActionScri
 
 		Available = true;
 
-		if (PlayerState->IsConditionMet(ActionEntry))
+		if (PlayerState->IsConditionMet(ActionEntry.RequiredClues))
 		{
 			UWJ_Object* NewActionData = NewObject<UWJ_Object>(this);
 			NewActionData->ActionName = ActionEntry.ActionName;
@@ -152,96 +152,104 @@ void UWJ_ActionsWidget::ShowListView()
 	}
 }
 
-void UWJ_ActionsWidget::DisplayScript(TArray<FDialogueEntry> NewScripts)
-{
-	if (NewScripts.Num() == 0) return;
+//void UWJ_ActionsWidget::DisplayScript(TArray<FDialogueEntry> NewScripts)
+//{
+//	Super::DisplayScript(NewScripts);
+//
+//	if (NewScripts.Num() == 0) return;
+//
+//	CurrentScripts = NewScripts;
+//	CurrentScriptIndex = 0;
+//
+//	if (ScriptText)
+//	{
+//		ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
+//		ScriptText->SetRenderOpacity(0.0f);
+//
+//		UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
+//		
+//		if (FadeInAnimation)
+//		{
+//			PlayAnimation(FadeInAnimation);
+//		}
+//	}
+//
+//	if (NextButton)
+//	{
+//		NextButton->SetVisibility(ESlateVisibility::Visible);
+//		NextButton->OnClicked.AddDynamic(this, &UWJ_ActionsWidget::NextScript);
+//
+//	}
+//}
 
-	CurrentScripts = NewScripts;
-	CurrentScriptIndex = 0;
+//void UWJ_ActionsWidget::NextScript()
+//{
+//	Super::NextScript();
+//
+//	CurrentScriptIndex++;
+//
+//	if (CurrentScriptIndex < CurrentScripts.Num())
+//	{
+//		if (ScriptText)
+//		{
+//			ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
+//			ScriptText->SetRenderOpacity(0.0f);
+//
+//			UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
+//
+//			if (FadeInAnimation)
+//			{
+//				PlayAnimation(FadeInAnimation);
+//			}
+//		
+//		}
+//	}
+//	else
+//	{
+//		HandleEndOfDialogue();
+//	}
+//
+//}
 
-	if (ScriptText)
-	{
-		ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
-		ScriptText->SetRenderOpacity(0.0f);
-
-		UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
-		
-		if (FadeInAnimation)
-		{
-			PlayAnimation(FadeInAnimation);
-		}
-	}
-
-	if (NextButton)
-	{
-		NextButton->SetVisibility(ESlateVisibility::Visible);
-		NextButton->OnClicked.AddDynamic(this, &UWJ_ActionsWidget::NextScript);
-
-	}
-}
-
-void UWJ_ActionsWidget::NextScript()
-{
-	CurrentScriptIndex++;
-
-	if (CurrentScriptIndex < CurrentScripts.Num())
-	{
-		if (ScriptText)
-		{
-			ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
-			ScriptText->SetRenderOpacity(0.0f);
-
-			UWidgetAnimation* FadeInAnimation = FindAnimation("FadeIn");
-
-			if (FadeInAnimation)
-			{
-				PlayAnimation(FadeInAnimation);
-			}
-		
-		}
-	}
-	else
-	{
-		HandleEndOfDialogue();
-	}
-
-}
-
-void UWJ_ActionsWidget::HandleEndOfDialogue()
-{
-	//if (ScriptText)
-	//{
-	//	ScriptText->SetText(FText::FromString(""));
-	//	ScriptText->SetRenderOpacity(0.0f);
-	//}
-
-	RestoreActionSelectionUi();
-
-	if (NextButton)
-	{
-		EnableNextButton(false);
-		NextButton->OnClicked.Clear();
-	}
-
-	OnDialogueEnded.Broadcast();
-}
+//void UWJ_ActionsWidget::HandleEndOfDialogue()
+//{
+//	Super::HandleEndOfDialogue();
+//
+//	//if (ScriptText)
+//	//{
+//	//	ScriptText->SetText(FText::FromString(""));
+//	//	ScriptText->SetRenderOpacity(0.0f);
+//	//}
+//
+//	RestoreActionSelectionUi();
+//
+//	if (NextButton)
+//	{
+//		EnableNextButton(false);
+//		NextButton->OnClicked.Clear();
+//	}
+//
+//	OnDialogueEnded.Broadcast();
+//}
 
 void UWJ_ActionsWidget::RestoreActionSelectionUi()
 {
-	if (ActionListView)
-	{
-		ShowListView();
-	}
+	Super::RestoreActionSelectionUi();
 
-	if (ScriptText)
-	{
-		ScriptText->SetText(FText::GetEmpty());
-	}
+	//if (ActionListView)
+	//{
+	//	ShowListView();
+	//}
 
-	if (NextButton)
-	{
-		EnableNextButton(false);
-	}
+	//if (ScriptText)
+	//{
+	//	ScriptText->SetText(FText::GetEmpty());
+	//}
+
+	//if (NextButton)
+	//{
+	//	EnableNextButton(false);
+	//}
 
 	if (CloseButton)
 	{

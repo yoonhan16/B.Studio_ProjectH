@@ -39,6 +39,16 @@ enum class EActionType : uint8
 	SpecialEvent
 };
 
+UENUM(BlueprintType)
+enum class EInterrogationMood : uint8
+{
+	Neutral UMETA(DisplayName = "Neutral"),
+	Aggressive UMETA(DisplayName = "Aggressive"),
+	Friendly UMETA(DisplayName = "Friendly"),
+	Suspicious UMETA(DisplayName = "Suspicious")
+	
+};
+
 USTRUCT(Atomic, BlueprintType)
 struct FSlotStruct
 {
@@ -279,6 +289,30 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDateTime SubmittedAt;
+};
+
+USTRUCT(BlueprintType)
+struct FInterrogationScriptEntry
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDialogueEntry Dialogue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDialogueEntry> Descriptions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<int32> RequiredClues;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EInterrogationMood Mood = EInterrogationMood::Neutral;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bRequiresCondition = false;
+
 };
 
 UCLASS()

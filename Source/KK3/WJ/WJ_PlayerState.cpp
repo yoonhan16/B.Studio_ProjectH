@@ -101,11 +101,11 @@ bool AWJ_PlayerState::IsClueActive(int32 ClueID) const
 	return ClueDatabase[ClueIndex].bIsActive;
 }
 
-bool AWJ_PlayerState::IsConditionMet(const FActionEntry& Entry) const
+bool AWJ_PlayerState::IsConditionMet(const TArray<int32>& Entry) const
 {
-	if (Entry.RequiredClues.Num() == 0) return true;
+	if (Entry.Num() == 0) return true;
 
-	for (int32 ClueID : Entry.RequiredClues)
+	for (int32 ClueID : Entry)
 	{
 		if (!IsClueActive(ClueID))
 		{

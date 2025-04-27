@@ -12,7 +12,7 @@
 #include "../WJ_ItemStruct.h"
 #include "WJ_ActionsWidget.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueEnded);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueEnded);
 
 /**
  * 
@@ -29,28 +29,27 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AWJ_PlayerController* OwnerPlayerController;
 
-	UPROPERTY(meta = (BindWidget))
-	UListView* ActionListView;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
 	TSubclassOf<UUserWidget> ActionItemWidgetClass;
 
-	UPROPERTY(meta = (BindWidget))
-	UTextBlock* ScriptText;
+	//UPROPERTY(meta = (BindWidget))
+	//UTextBlock* ScriptText;
 
-	UPROPERTY(meta = (BindWidget))
-	UButton* NextButton;
+	//UPROPERTY(meta = (BindWidget))
+	//UButton* NextButton;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* CloseButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FDialogueEntry> CurrentScripts;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//TArray<FDialogueEntry> CurrentScripts;
 
 	int32 CurrentScriptIndex = 0;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnDialogueEnded OnDialogueEnded;
+	//UPROPERTY(BlueprintAssignable)
+	//FOnDialogueEnded OnDialogueEnded;
 public:
 	UFUNCTION()
 	void InitializeWidget(AWJ_PlayerController* InPlayerController);
@@ -82,17 +81,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowListView();
 
-	UFUNCTION(BlueprintCallable)
-	void DisplayScript(TArray<FDialogueEntry> NewScripts);
+	//UFUNCTION(BlueprintCallable)
+	//void DisplayScript(TArray<FDialogueEntry> NewScripts);
+
+	//UFUNCTION(BlueprintCallable)
+	//void NextScript() override;
+	// 
+	//UFUNCTION(BlueprintCallable)
+	//void HandleEndOfDialogue() override;
 
 	UFUNCTION(BlueprintCallable)
-	void NextScript();
-	
-	UFUNCTION(BlueprintCallable)
-	void HandleEndOfDialogue();
-
-	UFUNCTION(BlueprintCallable)
-	void RestoreActionSelectionUi();
+	virtual void RestoreActionSelectionUi() override;
 
 	UFUNCTION(BlueprintCallable)
 	void ResetActionList();

@@ -7,6 +7,7 @@
 #include "Animation/WidgetAnimation.h"
 #include "Components/ListView.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
 #include "Components/ProgressBar.h"
 #include "Components/VerticalBox.h"
 #include "Components/MultiLineEditableTextBox.h"
@@ -19,6 +20,17 @@ void UWJ_Widget::NativeConstruct()
 	{
 		DescriptionBox->SetVisibility(ESlateVisibility::Collapsed);
 	}
+
+	if (ScriptText)
+	{
+		ScriptText->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
+	if (NextButton)
+	{
+		NextButton->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
 }
 
 void UWJ_Widget::SetDescriptionText(FText NewText)
@@ -88,4 +100,85 @@ void UWJ_Widget::HighlightSelectedQuestion(UWJ_Object* SelectedQuestion, UListVi
 
 	}
 
+}
+
+void UWJ_Widget::DisplayScript(const TArray<FDialogueEntry>& Scripts)
+{
+	if (Scripts.Num() == 0 || !ScriptText) return;
+
+	CurrentScripts = Scripts;
+	CurrentScriptIndex = 0;
+
+	ScriptText->SetRenderOpacity(0.0f);
+	ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
+
+	FadeIn = FindAnimation("FadeIn");
+
+	if (FadeIn)
+	{
+		PlayAnimation(FadeIn);
+	}
+
+	if (NextButton)
+	{
+		NextButton->SetIsEnabled(true);
+	}
+}
+
+void UWJ_Widget::NextScript()
+{
+	if (CurrentScriptIndex + 1 < CurrentScripts.Num())
+	{
+		CurrentScriptIndex++;
+
+		ScriptText->SetRenderOpacity(0.0f);
+		ScriptText->SetText(FText::FromString(CurrentScripts[CurrentScriptIndex].DialogueText));
+
+		FadeIn = FindAnimation("FadeIn");
+
+		if (FadeIn)
+		{
+			PlayAnimation(FadeIn);
+		}
+	}
+	else
+	{
+		HandleEndOfDialogue();
+	}
+}
+
+void UWJ_Widget::HandleEndOfDialogue()
+{
+	CurrentScripts.Empty();
+	CurrentScriptIndex = 0;
+
+	if (ScriptText)
+	{
+		ScriptText->SetText(FText::GetEmpty());
+	}
+
+	if (NextButton)
+	{
+		NextButton->SetIsEnabled(false);
+	}
+
+	OnDialogueEnded.Broadcast();
+}
+
+void UWJ_Widget::RestoreActionSelectionUi()
+{
+	if (NextButton)
+	{
+		NextButton->SetIsEnabled(true);
+	}
+
+	if (ScriptText)
+	{
+		ScriptText->SetText(FText::GetEmpty());
+	}
+
+	if (ActionListView)
+	{
+		ActionListView->SetVisibility(ESlateVisibility::Visible);
+	}
 }

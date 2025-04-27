@@ -22,6 +22,8 @@ class KK3_API UWJ_InterrogationWidget : public UWJ_Widget
 	
 public:
 
+	virtual void NativeConstruct() override;
+
 protected:
 
 	UPROPERTY(meta = (BindWidget))
@@ -30,8 +32,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UListView* QuestionListView;
 
-	UPROPERTY(meta = (BindWidget))
-	UButton* NextButton;
+	//UPROPERTY(meta = (BindWidget))
+	//UButton* NextButton;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* EndButton;
@@ -39,10 +41,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<FDialogueEntry> CurrentDialogue;
 
+	UPROPERTY(BlueprintReadWrite)
+	TArray<FInterrogationScriptEntry> AllInterrogationQuestions;
+
 	int32 CurrentDialogueIndex = 0;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnDialogueEnded OnDialogueEnded;
+	//UPROPERTY(BlueprintAssignable)
+	//FOnDialogueEnded OnDialogueEnded;
 
 	FTimerHandle NextButtonEnableTimer;
 
@@ -50,20 +55,32 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateAvailableQuestions(FActionScriptStruct NewQuestionData);
+	void InitializeInterrogation(const TArray<FInterrogationScriptEntry>& InQuestions);
 
 	UFUNCTION(BlueprintCallable)
-	void OnQuestionSelected(UWJ_Object* SelectedQuestion);
+	void UpdateAvailableQuestions(const TArray<FInterrogationScriptEntry> AllQuestions);
 
 	UFUNCTION(BlueprintCallable)
-	void NextDialogue();
+	void SelectQuestion(const TArray<FDialogueEntry>& DialogueScripts);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowNextDialogue();
 
 	UFUNCTION(BlueprintCallable)
 	void EndInterrogation();
 
 	UFUNCTION(BlueprintCallable)
-	void OnDialogueUpdated();
+	void HandleDialogueUpdated();
 
-	UFUNCTION(blueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	void EnableNextButton();
+
+	UFUNCTION(BlueprintCallable)
+	void RefreshQuestionListView();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetInterrogationUi();
+
+	UFUNCTION(BlueprintCallable)
+	void RestoreQustionSelectionUi();
 };

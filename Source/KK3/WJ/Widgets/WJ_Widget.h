@@ -8,6 +8,8 @@
 #include "../WJ_Object.h"
 #include "WJ_Widget.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueEnded);
 /**
  * 
  */
@@ -34,6 +36,25 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UListView* PhaseCheckList;
+
+	UWidgetAnimation* FadeIn = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDialogueEntry> CurrentScripts;
+
+	int32 CurrentScriptIndex = 0;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* ScriptText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* NextButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UListView* ActionListView;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FOnDialogueEnded OnDialogueEnded;
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -50,4 +71,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HighlightSelectedQuestion(UWJ_Object* SelectedQuestion, UListView* ListView);
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayScript(const TArray<FDialogueEntry>& Scripts);
+
+	UFUNCTION(BlueprintCallable)
+	void NextScript();
+
+	UFUNCTION(BlueprintCallable)
+	void HandleEndOfDialogue();
+
+	virtual void RestoreActionSelectionUi();
 };
