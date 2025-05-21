@@ -146,6 +146,12 @@ public:
 	int32 ClueID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ClueName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ClueDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsActive = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

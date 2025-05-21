@@ -8,15 +8,18 @@
 #include "Framework/Text/ISlateRun.h"
 #include "Widgets/Text/SRichTextBlock.h"
 #include "Engine/Engine.h"
+#include "CoreMinimal.h"
 
 class FClickableTextDecorator : public ITextDecorator
 {
 public:
 	FClickableTextDecorator(URichTextBlock* InOwner) : Owner(InOwner) {}
 
-	FClickableTextDecorator(UWJ_RichTextKeywordHandler* InHandler) : KeywordHandler(InHandler)
+	// Requires both URichTextBlock and KeywordHandler for full initialization
+	FClickableTextDecorator(URichTextBlock* InOwner, UWJ_RichTextKeywordHandler* InHandler) : Owner(InOwner),  KeywordHandler(InHandler)
 	{
-
+		check(InOwner);
+		check(InHandler);
 	}
 
 	virtual bool Supports(const FTextRunParseResults& RunParseResult, const FString& Text) const override
@@ -84,5 +87,10 @@ private:
 
 TSharedPtr<ITextDecorator> UWJ_RichTextClickableDecorator::CreateDecorator(URichTextBlock* InOwner)
 {
-	return MakeShareable(new FClickableTextDecorator(InOwner));
+	if(UWJ_RichTextKeywordHandler* Handler = Cast<UWJ_RichTextKeywordHandler>(GetOuter()))
+	{
+		return MakeShareable(new FClickableTextDecorator(InOwner, Handler));
+	}
+
+	return nullptr;
 }

@@ -168,4 +168,7 @@ public:
 	void Multi_AddItemChecker(FItemCheckerStruct NewItem);
 	bool Multi_AddItemChecker_Validate(FItemCheckerStruct NewItem);
 	void Multi_AddItemChecker_Implementation(FItemCheckerStruct NewItem);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<FLinkedClue> GetClueDatabase() const;
 };

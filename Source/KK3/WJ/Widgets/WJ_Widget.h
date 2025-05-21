@@ -37,6 +37,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UListView* PhaseCheckList;
 
+	UPROPERTY(meta =(BindWidgetAnim), Transient)
 	UWidgetAnimation* FadeIn = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -82,4 +83,9 @@ public:
 	void HandleEndOfDialogue();
 
 	virtual void RestoreActionSelectionUi();
+
+protected:
+
+	virtual void PreDisplayScript() {}
+	virtual void PostDisplayScript() {}
 };

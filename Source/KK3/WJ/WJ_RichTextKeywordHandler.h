@@ -38,14 +38,14 @@ public:
 /**
  * Handles keyword clicks inside RichTextBlock (e.g., <a href="keyword">text</a>)
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class KK3_API UWJ_RichTextKeywordHandler : public UObject
 {
 	GENERATED_BODY()
 	
 public:
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Keyword")
 	void BindTo(class URichTextBlock* TargetRichText);
 
 	UPROPERTY(BlueprintAssignable)
@@ -58,10 +58,15 @@ public:
 	void HandleKeywordClicked(const FString& KeywordId);
 
 	UPROPERTY()
-	class AWJ_PlayerState* PlayerState;
+	class AWJ_PlayerState* PlayerState = nullptr;
 
+	UFUNCTION(BlueprintCallable, Category = "Dummy")
+	void InitializeDummyData();
 protected:
 
 	void HandleHyperlinkClicked(const FTextRunInfo& RunInfo);
+
+	TSharedRef<ITextDecorator> MakeKeywordDecorator(URichTextBlock* Owner, const FString& KeywordId);
+
 
 };

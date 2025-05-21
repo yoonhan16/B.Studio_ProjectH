@@ -6,6 +6,9 @@
 #include "Components/RichTextBlockDecorator.h"
 #include "WJ_RichTextClickableDecorator.generated.h"
 
+
+class FClickableTextDecorator;
+
 /**
  * 
  */
@@ -16,4 +19,7 @@ class KK3_API UWJ_RichTextClickableDecorator : public URichTextBlockDecorator
 	
 protected:
 	virtual TSharedPtr<ITextDecorator> CreateDecorator(URichTextBlock* InOwner) override;
+
+protected:
+	TSharedPtr<FClickableTextDecorator> DecoratorInstance;
 };

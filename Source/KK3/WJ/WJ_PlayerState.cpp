@@ -357,3 +357,8 @@ void AWJ_PlayerState::Multi_AddItemChecker_Implementation(FItemCheckerStruct New
 	ItemChecker.Add(NewItem);
 
 }
+
+TArray<FLinkedClue> AWJ_PlayerState::GetClueDatabase() const
+{
+	return ClueDatabase;
+}

@@ -7,6 +7,7 @@
 #include "WJ_GameModeBase.h"
 #include "WJ_HUD.h"
 #include "WJ_GameStateBase.h"
+#include "WJ_KeywordHandlerSubsystem.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WJ_InteractingWidget.h"
 #include "Widgets/WJ_ClueReceiveWidget.h"
@@ -47,6 +48,9 @@ void AWJ_PlayerController::BeginPlay()
 	Super::BeginPlay();
 	
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+	UWJ_KeywordHandlerSubsystem* Subsys =
+		GetGameInstance()->GetSubsystem<UWJ_KeywordHandlerSubsystem>();
 
 	if(Subsystem)
 	{
